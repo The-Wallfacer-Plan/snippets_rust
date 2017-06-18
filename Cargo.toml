@@ -1,0 +1,76 @@
+[package]
+name = "hw_rs"
+version = "0.1.0"
+authors = ["Hongxu <hongxuchen1989@gmail.com>"]
+
+[dependencies]
+llvm-sys = "40"
+rand = "0.3"
+regex = "0.2.2"
+time = "0.1.37"
+clang = "0.16.0"
+clap = "2"
+mongodb = "0.3.0"
+itertools = "0.6.0"
+bson = "0.8"
+serde_json = "1.0.2"
+toml = "0.4"
+fs_extra = "1.0.0"
+ncurses = "5.85.0"
+slog = "2"
+nom = "^3.1"
+unicorn = "0.7.0"
+
+
+
+# The development profile, used for `cargo build`.
+[profile.dev]
+opt-level = 0      # controls the `--opt-level` the compiler builds with
+debug = true       # controls whether the compiler passes `-C debuginfo`
+                   # a value of `true` is equivalent to `2`
+rpath = false      # controls whether the compiler passes `-C rpath`
+lto = false        # controls `-C lto` for binaries and staticlibs
+debug-assertions = true # controls whether debug assertions are enabled
+codegen-units = 1  # controls whether the compiler passes `-C codegen-units`
+                   # `codegen-units` is ignored when `lto = true`
+panic = 'unwind'   # panic strategy (`-C panic=...`), can also be 'abort'
+
+# The release profile, used for `cargo build --release`.
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = false
+debug-assertions = false
+codegen-units = 1
+panic = 'unwind'
+
+# The testing profile, used for `cargo test`.
+[profile.test]
+opt-level = 0
+debug = 2
+rpath = false
+lto = false
+debug-assertions = true
+codegen-units = 1
+panic = 'unwind'
+
+# The benchmarking profile, used for `cargo bench`.
+[profile.bench]
+opt-level = 3
+debug = false
+rpath = false
+lto = false
+debug-assertions = false
+codegen-units = 1
+panic = 'unwind'
+
+# The documentation profile, used for `cargo doc`.
+[profile.doc]
+opt-level = 0
+debug = 2
+rpath = false
+lto = false
+debug-assertions = true
+codegen-units = 1
+panic = 'unwind'
