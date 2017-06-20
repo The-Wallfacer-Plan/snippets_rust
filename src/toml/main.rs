@@ -1,6 +1,10 @@
+#![allow(unused_imports, dead_code)]
 extern crate toml;
 #[macro_use]
 extern crate serde_derive;
+#[macro_use]
+extern crate log;
+extern crate log4rs;
 
 use std::collections::HashMap;
 
@@ -33,14 +37,12 @@ fn test_str() {
 }
 
 fn test_file() {
-    #[derive(Debug)]
-    #[derive(Deserialize)]
+    #[derive(Debug, Deserialize)]
     struct Conf {
-        database:DB
+        database: DB
     }
 
-    #[derive(Debug)]
-    #[derive(Deserialize)]
+    #[derive(Debug, Deserialize)]
     struct DB {
         server: String,
         ports: Vec<u32>,
@@ -66,9 +68,10 @@ fn test_file() {
 
     let database_conf: Conf = toml::from_str(&*content).unwrap();
 
-    println!("database_conf={:?}", database_conf);
+    info!("database_conf={:?}", database_conf);
 }
 
 fn main() {
+    log4rs::init_file("src/log4rs.yml", Default::default()).unwrap();
     test_file();
 }

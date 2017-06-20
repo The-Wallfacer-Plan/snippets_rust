@@ -12,7 +12,7 @@ fn test_io() {
     use std::path::Path;
 
     // Create a path to the desired file
-    let path = Path::new("hello.txt");
+    let path = Path::new("examples/hello.txt");
     let display = path.display();
 
     // Open the path in read-only mode, returns `io::Result<File>`
@@ -411,7 +411,8 @@ fn main() {
 
     //    test_thread();
     //    test_io();
-    test_basic();
+//    test_basic();
+    test_unsafe();
 }
 
 fn test_basic() {
@@ -440,6 +441,13 @@ fn test_basic() {
     println!("s1={}, s={}", s1, s);
 
 
+}
+
+fn test_unsafe() {
+    let u: &[u8] = &[49, 50, 51];
+    unsafe {
+        assert_eq!(u, std::mem::transmute::<&str, &[u8]>("123"));
+    }
 }
 
 

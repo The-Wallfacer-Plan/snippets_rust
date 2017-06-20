@@ -3,9 +3,9 @@ name = "rs_snippets"
 version = "0.1.0"
 authors = ["Hongxu <hongxuchen1989@gmail.com>"]
 
-[[bin]]
-name = "llvm"
-path = "src/llvm/main.rs"
+#[[bin]]
+#name = "llvm"
+#path = "src/llvm/main.rs"
 
 [[bin]]
 name = "basics"
@@ -15,10 +15,22 @@ path = "src/basics/main.rs"
 name = "toml"
 path = "src/toml/main.rs"
 
+[[bin]]
+name = "sys"
+path = "src/sys/main.rs"
+
+[[bin]]
+name = "network"
+path = "src/network/main.rs"
+
+[[bin]]
+name = "ncurses"
+path = "src/ncurses/main.rs"
+
 [dependencies]
 serde = "1.0.8"
 serde_derive = "1.0.8"
-llvm-sys = "40"
+#llvm-sys = "40"
 libc = "0.2"
 rand = "0.3"
 regex = "0.2.2"
@@ -32,7 +44,9 @@ serde_json = "1.0.2"
 toml = "0.4"
 fs_extra = "1.0.0"
 ncurses = "5.85.0"
-slog = "2"
+log = "0.3"
+#pretty_env_logger = "0.1.1"
+log4rs = "0.7.0"
 nom = "^3.1"
 unicorn = "0.7.0"
 sysinfo = "0.3.8"
@@ -43,14 +57,14 @@ clippy = "*"
 redis = "0.5.3"
 url = "1.5.0"
 hyper = "0.11"
-futures = "0.1.14"
 curl = "0.4.6"
+tokio-core = "0.1.8"
+futures = "0.1.14"
 quickcheck = "0.3"
 rulinalg="0.4.2"
 cpython = "0.1"
 pbr = "1.0.0"
 notify = "4.0.0"
-
 
 
 # The development profile, used for `cargo build`.
