@@ -5,6 +5,7 @@ authors = ["Hongxu <hongxuchen1989@gmail.com>"]
 
 [dependencies]
 llvm-sys = "40"
+libc = "0.2"
 rand = "0.3"
 regex = "0.2.2"
 time = "0.1.37"
@@ -20,6 +21,21 @@ ncurses = "5.85.0"
 slog = "2"
 nom = "^3.1"
 unicorn = "0.7.0"
+sysinfo = "0.3.8"
+nix = "0.8.0"
+mio = "0.6"
+num = "0.1"
+clippy = "*"
+redis = "0.5.3"
+url = "1.5.0"
+hyper = "0.11"
+futures = "0.1.14"
+curl = "0.4.6"
+quickcheck = "0.3"
+rulinalg="0.4.2"
+cpython = "0.1"
+pbr = "1.0.0"
+notify = "4.0.0"
 
 
 
