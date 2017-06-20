@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 //! Construct a function that does nothing in LLVM IR.
 
 extern crate llvm_sys as llvm;

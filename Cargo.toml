@@ -1,9 +1,23 @@
 [package]
-name = "hw_rs"
+name = "rs_snippets"
 version = "0.1.0"
 authors = ["Hongxu <hongxuchen1989@gmail.com>"]
 
+[[bin]]
+name = "llvm"
+path = "src/llvm/main.rs"
+
+[[bin]]
+name = "basics"
+path = "src/basics/main.rs"
+
+[[bin]]
+name = "toml"
+path = "src/toml/main.rs"
+
 [dependencies]
+serde = "1.0.8"
+serde_derive = "1.0.8"
 llvm-sys = "40"
 libc = "0.2"
 rand = "0.3"

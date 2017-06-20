@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 extern crate llvm_sys as llvm;
 
 use std::mem;

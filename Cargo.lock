@@ -1,5 +1,5 @@
 [root]
-name = "hw_rs"
+name = "rs_snippets"
 version = "0.1.0"
 dependencies = [
  "bson 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -27,6 +27,8 @@ dependencies = [
  "redis 0.5.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rulinalg 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_derive 1.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "slog 2.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "sysinfo 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",

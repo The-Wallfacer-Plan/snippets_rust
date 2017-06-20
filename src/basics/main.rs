@@ -1,14 +1,5 @@
 #![allow(dead_code)]
 
-extern crate llvm_sys as llvm;
-extern crate clang;
-
-mod llvm_jit;
-mod llvm_nop;
-mod clang_struct;
-
-mod scoping;
-
 use std::fmt;
 
 use std::thread;
