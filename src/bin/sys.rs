@@ -1,3 +1,4 @@
+#![allow(unused_imports, unused_variables, dead_code)]
 extern crate sysinfo;
 extern crate notify;
 #[macro_use]
@@ -6,7 +7,7 @@ extern crate log;
 use sysinfo::SystemExt;
 
 fn notify() {
-    use notify::{RecommendedWatcher, Watcher, RecursiveMode};
+    use notify::{RecommendedWatcher, RecursiveMode, Watcher};
     use std::sync::mpsc::channel;
     use std::time::Duration;
 

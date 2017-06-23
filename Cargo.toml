@@ -1,136 +1,102 @@
-
 [package]
+authors = ["Hongxu <hongxuchen1989@gmail.com>"]
 name = "rs_snippets"
 version = "0.1.0"
-authors = ["Hongxu <hongxuchen1989@gmail.com>"]
-
-#[[bin]]
-#name = "llvm"
-#path = "src/llvm/main.rs"
-
-[[bin]]
-name = "basics"
-path = "src/basics/main.rs"
-
-[[bin]]
-name = "toml"
-path = "src/toml/main.rs"
-
-[[bin]]
-name = "sys"
-path = "src/sys/main.rs"
-
-[[bin]]
-name = "network"
-path = "src/network/main.rs"
-
-[[bin]]
-name = "ncurses"
-path = "src/ncurses/main.rs"
-
-[[bin]]
-name = "shm_reader"
-path = "src/ipc/reader.rs"
-
-[[bin]]
-name = "shm_writer"
-path = "src/ipc/writer.rs"
-
-[[bin]]
-name = "mmap1"
-path = "src/ipc/mmap1.rs"
-
 
 [dependencies]
-serde = "1.0.8"
-serde_derive = "1.0.8"
-#llvm-sys = "40"
-libc = "0.2"
-rand = "0.3"
-regex = "0.2.2"
-time = "0.1.37"
+bson = "0.8"
+bytecount = "0.1.6"
 clang = "0.16.0"
 clap = "2"
-mongodb = "0.3.0"
-itertools = "0.6.0"
-bson = "0.8"
-serde_json = "1.0.2"
-toml = "0.4"
-fs_extra = "1.0.0"
-ncurses = "5.85.0"
-log = "0.3"
-#pretty_env_logger = "0.1.1"
-log4rs = "0.7.0"
-nom = "^3.1"
-unicorn = "0.7.0"
-sysinfo = "0.3.8"
-nix = "0.8.0"
-mio = "0.6"
-num = "0.1"
 clippy = "*"
-redis = "0.5.3"
-url = "1.5.0"
-hyper = "0.11"
-curl = "0.4.6"
-tokio-core = "0.1.8"
-futures = "0.1.14"
-quickcheck = "0.3"
-rulinalg="0.4.2"
 cpython = "0.1"
-pbr = "1.0.0"
-notify = "4.0.0"
-shmem = "0.2.0"
+curl = "0.4.6"
+fs_extra = "1.0.0"
+futures = "0.1.14"
+hyper = "0.11"
+itertools = "0.6.0"
+libc = "0.2"
+log = "0.3"
+log4rs = "0.7.0"
 memmap = "0.5.2"
+mio = "0.6"
+mongodb = "0.3.0"
+ncurses = "5.85.0"
+nix = "0.8.0"
+nom = "^3.1"
+notify = "4.0.0"
+num = "0.1"
+pbr = "1.0.0"
+quickcheck = "0.3"
+rand = "0.3"
+redis = "0.5.3"
+regex = "0.2.2"
+rulinalg = "0.4.2"
+serde = "1.0.8"
+serde_derive = "1.0.8"
+serde_json = "1.0.2"
+shmem = "0.2.0"
+sysinfo = "0.3.8"
+time = "0.1.37"
+tokio-core = "0.1.8"
+toml = "0.4"
+unicorn = "0.7.0"
+url = "1.5.0"
 
+[lib]
+name = "mylib"
+path = "src/lib/mods.rs"
+test = false
+doc = false
+doctest = false
 
-# The development profile, used for `cargo build`.
-[profile.dev]
-opt-level = 0      # controls the `--opt-level` the compiler builds with
-debug = true       # controls whether the compiler passes `-C debuginfo`
-                   # a value of `true` is equivalent to `2`
-rpath = false      # controls whether the compiler passes `-C rpath`
-lto = false        # controls `-C lto` for binaries and staticlibs
-debug-assertions = true # controls whether debug assertions are enabled
-codegen-units = 1  # controls whether the compiler passes `-C codegen-units`
-                   # `codegen-units` is ignored when `lto = true`
-panic = 'unwind'   # panic strategy (`-C panic=...`), can also be 'abort'
+[features]
+avx-accel = ["bytecount/avx-accel"]
+simd-accel = ["bytecount/simd-accel"]
 
-# The release profile, used for `cargo build --release`.
-[profile.release]
-opt-level = 3
-debug = false
-rpath = false
-lto = false
-debug-assertions = false
-codegen-units = 1
-panic = 'unwind'
+[profile]
 
-# The testing profile, used for `cargo test`.
-[profile.test]
-opt-level = 0
-debug = 2
-rpath = false
-lto = false
-debug-assertions = true
-codegen-units = 1
-panic = 'unwind'
-
-# The benchmarking profile, used for `cargo bench`.
 [profile.bench]
-opt-level = 3
+codegen-units = 1
 debug = false
-rpath = false
-lto = false
 debug-assertions = false
-codegen-units = 1
-panic = 'unwind'
-
-# The documentation profile, used for `cargo doc`.
-[profile.doc]
-opt-level = 0
-debug = 2
-rpath = false
 lto = false
-debug-assertions = true
+opt-level = 3
+panic = "unwind"
+rpath = false
+
+[profile.dev]
 codegen-units = 1
-panic = 'unwind'
+debug = true
+debug-assertions = true
+lto = false
+opt-level = 0
+panic = "unwind"
+rpath = false
+
+[profile.doc]
+codegen-units = 1
+debug = 2
+debug-assertions = true
+lto = false
+opt-level = 0
+panic = "unwind"
+rpath = false
+
+[profile.release]
+codegen-units = 1
+debug = false
+debug-assertions = false
+lto = false
+opt-level = 3
+panic = "unwind"
+rpath = false
+
+[profile.test]
+codegen-units = 1
+debug = 2
+debug-assertions = true
+lto = false
+opt-level = 0
+panic = "unwind"
+rpath = false

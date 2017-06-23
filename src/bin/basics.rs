@@ -1,8 +1,12 @@
-#![allow(dead_code)]
+#![allow(dead_code, unused_imports, unused_variables)]
+
+extern crate mylib;
 
 use std::fmt;
 
 use std::thread;
+
+use mylib::scoping;
 
 fn test_io() {
     // open.rs
@@ -19,16 +23,14 @@ fn test_io() {
     let mut file = match File::open(&path) {
         // The `description` method of `io::Error` returns a string that
         // describes the error
-        Err(why) => panic!("couldn't open {}: {}", display,
-                           why.description()),
+        Err(why) => panic!("couldn't open {}: {}", display, why.description()),
         Ok(file) => file,
     };
 
     // Read the file contents into a string, returns `io::Result<usize>`
     let mut s = String::new();
     match file.read_to_string(&mut s) {
-        Err(why) => panic!("couldn't read {}: {}", display,
-                           why.description()),
+        Err(why) => panic!("couldn't read {}: {}", display, why.description()),
         Ok(_) => print!("{} contains:\n{}", display, s),
     }
 
@@ -43,9 +45,7 @@ fn test_thread() {
 
     for i in 0..NTHREADS {
         // Spin up another thread
-        children.push(thread::spawn(move || {
-            println!("this is thread number {}", i)
-        }));
+        children.push(thread::spawn(move || println!("this is thread number {}", i)));
     }
 
     for child in children {
@@ -58,7 +58,11 @@ fn test_map() {
     #![allow(dead_code)]
 
     #[derive(Debug)]
-    enum Food { Apple, Carrot, Potato }
+    enum Food {
+        Apple,
+        Carrot,
+        Potato,
+    }
 
     #[derive(Debug)]
     struct Peeled(Food);
@@ -157,10 +161,10 @@ fn test_macro() {
 
     // Recall that blocks are expressions too!
     print_result!({
-        let x = 1u32;
+                      let x = 1u32;
 
-        x * x + 2 * x - 1
-    });
+                      x * x + 2 * x - 1
+                  });
 }
 
 #[allow(unused_variables)]
@@ -175,21 +179,25 @@ fn test_generics() {
     ///////////////////////////////////////////////////////////////////////////
 
     struct Val {
-        val: f64
+        val: f64,
     }
 
     struct GenVal<T> {
-        gen_val: T
+        gen_val: T,
     }
 
     // impl of Val
     impl Val {
-        fn value(&self) -> &f64 { &self.val }
+        fn value(&self) -> &f64 {
+            &self.val
+        }
     }
 
     // impl of GenVal for a generic type `T`
     impl<T> GenVal<T> {
-        fn value(&self) -> &T { &self.gen_val }
+        fn value(&self) -> &T {
+            &self.gen_val
+        }
     }
 
     let x = Val { val: 3.0 };
@@ -199,17 +207,17 @@ fn test_generics() {
 }
 
 fn test_captures() {
-    fn apply<F>(f: F) where
-    // The closure takes no input and returns nothing.
-        F: FnOnce() {
+    fn apply<F>(f: F)
+        where F: FnOnce()
+    {
         // ^ TODO: Try changing this to `Fn` or `FnMut`.
         f();
     }
 
     // A function which takes a closure and returns an `i32`.
-    fn apply_to_3<F>(f: F) -> i32 where
-    // The closure takes an `i32` and returns an `i32`.
-        F: Fn(i32) -> i32 {
+    fn apply_to_3<F>(f: F) -> i32
+        where F: Fn(i32) -> i32
+    {
         f(3)
     }
 
@@ -229,7 +237,7 @@ fn test_captures() {
 
     apply(diary);
 
-    let double = |x| { 2 * x };
+    let double = |x| 2 * x;
 
     println!("3 doubled: {}", apply_to_3(double));
 }
@@ -239,10 +247,10 @@ fn test_collections() {
     let movable = Box::new(3);
 
     let vec1 = vec![1, 2, 3];
-    println!("2 in vec1? {}", vec1.iter().any(|&x| { x == 2 }));
+    println!("2 in vec1? {}", vec1.iter().any(|&x| x == 2));
 
     let vec2 = vec![4, 5, 6];
-    println!("2 in vec2? {}", vec2.into_iter().any(|x| { x == 2 }));
+    println!("2 in vec2? {}", vec2.into_iter().any(|x| x == 2));
 
     let array1 = [1, 2, 3];
     let array2 = [4, 5, 6];
@@ -272,7 +280,7 @@ fn test_optional() {
 fn test_ptr_ref() {
     let reference = &4;
     match reference {
-        ref val => println!("got a value via destructing {}", val)
+        ref val => println!("got a value via destructing {}", val),
     }
 
     let ref _is_a_reference = 3;
@@ -280,7 +288,7 @@ fn test_ptr_ref() {
     let mut mut_value = 6;
 
     match value {
-        ref r => println!("got a ref to a value {:?}", r)
+        ref r => println!("got a ref to a value {:?}", r),
     }
 
     match mut_value {
@@ -302,7 +310,10 @@ fn test_constants() {
     let n = 16;
     let lang = LANGUAGE;
     println!("language is {}, lang is also {}", LANGUAGE, lang);
-    println!("{} is {}, size={}", n, if is_big(n) { "big" } else { "small" }, std::mem::size_of_val(LANGUAGE));
+    println!("{} is {}, size={}",
+             n,
+             if is_big(n) { "big" } else { "small" },
+             std::mem::size_of_val(LANGUAGE));
 }
 
 fn test_enum() {
@@ -314,7 +325,7 @@ fn test_enum() {
         Height(i32),
         Weight(i32),
         // or like structures.
-        Info { name: String, height: i32 }
+        Info { name: String, height: i32 },
     }
 
     fn inspect(p: Person) {
@@ -323,13 +334,14 @@ fn test_enum() {
             Person::Scientist => println!("scientist"),
             Person::Height(i) => println!("has height {}", i),
             Person::Weight(i) => println!("has weight {}", i),
-            Person::Info { name, height } => {
-                println!("{} is {} tall.", name, height)
-            }
+            Person::Info { name, height } => println!("{} is {} tall.", name, height),
         }
     }
 
-    let dave = Person::Info { name: "Dave".to_owned(), height: 72 };
+    let dave = Person::Info {
+        name: "Dave".to_owned(),
+        height: 72,
+    };
     inspect(dave);
 
     ///////////////////////////////////////////////////////////////////////////
@@ -411,7 +423,7 @@ fn main() {
 
     //    test_thread();
     //    test_io();
-//    test_basic();
+    //    test_basic();
     test_unsafe();
 }
 
@@ -426,7 +438,7 @@ fn test_basic() {
 
     let four = IpAddrKind::V4;
 
-    fn route(ip_type: & IpAddrKind) { }
+    fn route(ip_type: &IpAddrKind) {}
 
     route(&four);
 
@@ -449,5 +461,3 @@ fn test_unsafe() {
         assert_eq!(u, std::mem::transmute::<&str, &[u8]>("123"));
     }
 }
-
-

@@ -1,3 +1,5 @@
+#![allow(unused_variables, dead_code)]
+
 fn eat_box_i32(boxed_i32: Box<i32>) {
     println!("Destroying box that contains {}", boxed_i32);
 }

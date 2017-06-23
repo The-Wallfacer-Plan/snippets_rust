@@ -28,7 +28,8 @@ fn test_str() {
         [keys]
         github = 'xxxxxxxxxxxxxxxxx'
         travis = 'yyyyyyyyyyyyyyyyy'
-    "#).unwrap();
+    "#)
+            .unwrap();
 
     assert_eq!(config.ip, "127.0.0.1");
     assert_eq!(config.port, None);
@@ -39,7 +40,7 @@ fn test_str() {
 fn test_file() {
     #[derive(Debug, Deserialize)]
     struct Conf {
-        database: DB
+        database: DB,
     }
 
     #[derive(Debug, Deserialize)]
@@ -48,7 +49,7 @@ fn test_file() {
         ports: Vec<u32>,
         connection_max: u32,
         enabled: bool,
-        country: Option<String>
+        country: Option<String>,
     }
 
     use std::fs::File;
