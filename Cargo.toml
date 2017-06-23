@@ -1,3 +1,4 @@
+
 [package]
 name = "rs_snippets"
 version = "0.1.0"
@@ -26,6 +27,19 @@ path = "src/network/main.rs"
 [[bin]]
 name = "ncurses"
 path = "src/ncurses/main.rs"
+
+[[bin]]
+name = "shm_reader"
+path = "src/ipc/reader.rs"
+
+[[bin]]
+name = "shm_writer"
+path = "src/ipc/writer.rs"
+
+[[bin]]
+name = "mmap1"
+path = "src/ipc/mmap1.rs"
+
 
 [dependencies]
 serde = "1.0.8"
@@ -65,6 +79,8 @@ rulinalg="0.4.2"
 cpython = "0.1"
 pbr = "1.0.0"
 notify = "4.0.0"
+shmem = "0.2.0"
+memmap = "0.5.2"
 
 
 # The development profile, used for `cargo build`.
