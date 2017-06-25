@@ -8,9 +8,11 @@ pub struct Foo {
 }
 
 fn main() {
+    #[allow(blacklisted_name)]
     let foo = shmem::open::<Foo, _>("shmem-rust-test").unwrap();
     println!("bar={}, baz={}", foo.bar, foo.baz);
 
+    #[allow(blacklisted_name)]
     let bar = shmem::array::open::<u8, _>("shmem-rust-array").unwrap();
     println!("{:?}", &*bar);
 }

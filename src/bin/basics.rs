@@ -97,7 +97,7 @@ fn test_map() {
     // A function to peel, chop, and cook food all in sequence.
     // We chain multiple uses of `map()` to simplify the code.
     fn process(food: Option<Food>) -> Option<Cooked> {
-        food.map(|f| Peeled(f))
+        food.map(Peeled)
             .map(|Peeled(f)| Chopped(f))
             .map(|Chopped(f)| Cooked(f))
     }
@@ -280,10 +280,11 @@ fn test_optional() {
 fn test_ptr_ref() {
     let reference = &4;
     match reference {
-        ref val => println!("got a value via destructing {}", val),
+        val => println!("got a value via destructing {}", val),
     }
 
-    let ref _is_a_reference = 3;
+    #[allow(toplevel_ref_arg)]
+    let ref _is_a_reference = 3; // this is bad practice
     let value = 5;
     let mut mut_value = 6;
 

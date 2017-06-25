@@ -3,11 +3,15 @@ extern crate test;
 
 extern crate bytecount;
 
+fn main() {
+
+}
+
 fn my_bytecount1(arr: &[u8]) -> usize {
-    const v: u8 = 0;
+    const V: u8 = 0;
     let mut size: usize = 0;
     for b in arr {
-        if *b != v {
+        if *b != V {
             size += 1;
         }
     }

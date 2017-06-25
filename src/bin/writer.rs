@@ -11,11 +11,13 @@ struct Foo {
 }
 
 fn main() {
+    #[allow(blacklisted_name)]
     let mut foo = shmem::create::<Foo, _>("shmem-rust-test").unwrap();
 
     foo.bar = 12;
     foo.baz = 34;
 
+    #[allow(blacklisted_name)]
     let mut bar = shmem::array::create::<u8, _>("shmem-rust-array", 10).unwrap();
     for (i, item) in bar.iter_mut().enumerate() {
         *item = i as u8;
