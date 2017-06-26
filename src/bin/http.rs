@@ -12,19 +12,15 @@ fn run() {
     let client = Client::new(&core.handle());
 
     let uri = "http://httpbin.org/ip".parse().unwrap();
-    let work = client
-        .get(uri)
-        .and_then(|res| {
-            println!("Response: {}", res.status());
+    let work = client.get(uri).and_then(|res| {
+        println!("Response: {}", res.status());
 
-            res.body()
-                .for_each(|chunk| {
-                              io::stdout()
-                                  .write_all(&chunk)
-                                  .map(|_| ())
-                                  .map_err(From::from)
-                          })
-        });
+        res.body().for_each(|chunk| {
+            io::stdout().write_all(&chunk).map(|_| ()).map_err(
+                From::from,
+            )
+        })
+    });
     core.run(work).unwrap();
 }
 

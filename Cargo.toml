@@ -76,7 +76,7 @@ rpath = false
 
 [profile.doc]
 codegen-units = 1
-debug = 2
+debug = true
 debug-assertions = true
 lto = false
 opt-level = 0
@@ -94,7 +94,7 @@ rpath = false
 
 [profile.test]
 codegen-units = 1
-debug = 2
+debug = true
 debug-assertions = true
 lto = false
 opt-level = 0
