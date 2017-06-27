@@ -3,8 +3,14 @@ extern crate sysinfo;
 extern crate notify;
 #[macro_use]
 extern crate log;
+extern crate num_cpus;
 
 use sysinfo::SystemExt;
+
+fn cpu_info() {
+    let cpus = num_cpus::get();
+    println!("cpus={}", cpus);
+}
 
 fn notify() {
     use notify::{RecommendedWatcher, RecursiveMode, Watcher};
@@ -74,5 +80,6 @@ fn sysinfo() {
 }
 
 fn main() {
-    sysinfo();
+    // sysinfo();
+    cpu_info();
 }
