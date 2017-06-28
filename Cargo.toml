@@ -6,6 +6,8 @@ version = "0.1.0"
 [dependencies]
 bson = "0.8"
 bytecount = "0.1.6"
+chan = "0.1.19"
+chan-signal = "0.2.0"
 clang = "0.16.0"
 clap = "2"
 cpython = "0.1"
@@ -46,6 +48,7 @@ tokio-core = "0.1.8"
 toml = "0.4"
 unicorn = "0.7.0"
 url = "1.5.0"
+errno = "0.2.3"
 
 [features]
 avx-accel = ["bytecount/avx-accel"]

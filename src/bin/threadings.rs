@@ -5,6 +5,7 @@ use std::time::Duration;
 
 extern crate threadpool;
 extern crate num_cpus;
+extern crate scoped_threadpool;
 
 fn passing_type(n_jobs: usize) {
     use std::sync::mpsc;
@@ -16,6 +17,7 @@ fn passing_type(n_jobs: usize) {
 
     let (tx, rx): (mpsc::Sender<f64>, mpsc::Receiver<f64>) = mpsc::channel();
 
+    #[inline]
     fn term(k: usize) -> f64 {
         let c: i8 = if (k & 1 == 0) { 1 } else { -1 };
         ((4 * c) as f64) / ((2 * k + 1) as f64)
@@ -79,5 +81,6 @@ fn channels() {
 fn main() {
     // channels();
     // use_thread_pool();
-    passing_type(500000);
+    let n = 4967296;
+    passing_type(n);
 }
