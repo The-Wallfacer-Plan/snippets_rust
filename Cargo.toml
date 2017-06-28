@@ -12,6 +12,7 @@ clang = "0.16.0"
 clap = "2"
 cpython = "0.1"
 curl = "0.4.6"
+errno = "0.2.3"
 fs_extra = "1.0.0"
 futures = "0.1.14"
 hyper = "0.11"
@@ -48,7 +49,6 @@ tokio-core = "0.1.8"
 toml = "0.4"
 unicorn = "0.7.0"
 url = "1.5.0"
-errno = "0.2.3"
 
 [features]
 avx-accel = ["bytecount/avx-accel"]
