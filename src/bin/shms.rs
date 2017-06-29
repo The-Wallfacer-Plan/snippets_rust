@@ -1,10 +1,10 @@
-#![feature(rand, plugin)]
+// #![feature(rand, plugin)]
 #![allow(non_snake_case,unused_variables,dead_code)]
 extern crate libc;
 extern crate errno;
 extern crate rand;
 
-use rand::{Rng, thread_rng};
+// use rand::{Rng, thread_rng};
 
 use std::env;
 use std::u32;
@@ -28,7 +28,8 @@ unsafe fn str_to_cchar(s: &str) -> CString {
 
 fn get_shm_id(key: libc::c_int) -> i32 {
     unsafe {
-        let shm_id = libc::shmget(key, SIZE, libc::IPC_CREAT | 0666);
+        // 0o means octal number
+        let shm_id = libc::shmget(key, SIZE, libc::IPC_CREAT | 0o666);
         if shm_id < 0 {
             panic!("ALERT: shm_id={}, errno={}", shm_id, errno::errno());
         }
@@ -76,8 +77,9 @@ impl Child {
 
 fn main() {
 
-    let ref mut threadRng = thread_rng();
-    let key = threadRng.gen_range(0, u32::MAX/ 2) as i32;
+    // let ref mut threadRng = thread_rng();
+    let key = 0 as libc::key_t;
+    // let key = threadRng.gen_range(0, u32::MAX/ 2) as i32;
     let shm_id = get_shm_id(key);
 
     println!("key={}, shm_id={}", key, shm_id);
