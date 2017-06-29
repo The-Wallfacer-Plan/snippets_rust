@@ -1,28 +1,19 @@
 extern crate shmem;
+extern crate nix;
 
 use std::thread;
-use std::time::Duration;
+use nix::sys::signal::*;
+use nix::unistd::*;
+use nix::sys::wait::*;
 
-#[derive(Copy, Clone)]
-#[derive(Debug)]
-struct Foo {
-    bar: u32,
-    baz: u32,
-}
 
 fn main() {
-    #[allow(blacklisted_name)]
-    let mut foo = shmem::create::<Foo, _>("shmem-rust-test").unwrap();
-
-    foo.bar = 12;
-    foo.baz = 34;
 
     #[allow(blacklisted_name)]
-    let mut bar = shmem::array::create::<u8, _>("shmem-rust-array", 10).unwrap();
+    let mut bar = shmem::array::create::<u8, _>("shmem-rust-array-xx", 10).unwrap();
     for (i, item) in bar.iter_mut().enumerate() {
-        *item = i as u8;
+        *item = (10-i) as u8;
     }
-
-    thread::sleep(Duration::from_secs(40));
+    sleep(10);
 
 }
