@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 extern crate shmem;
 extern crate nix;
 

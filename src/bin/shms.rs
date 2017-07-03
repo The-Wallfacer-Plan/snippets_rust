@@ -1,5 +1,5 @@
 // #![feature(rand, plugin)]
-#![allow(non_snake_case,unused_variables,dead_code)]
+#![allow(non_snake_case,unused_variables,dead_code, unused_imports)]
 extern crate libc;
 extern crate errno;
 extern crate rand;

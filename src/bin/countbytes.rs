@@ -1,3 +1,4 @@
+#![allow(unused_variables, dead_code, unused_imports)]
 #![feature(test)]
 extern crate test;
 

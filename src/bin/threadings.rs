@@ -1,11 +1,10 @@
-#[allow(unused_variables, dead_code)]
+#![allow(unused_variables, dead_code, unused_imports)]
 use std::thread::spawn;
 use std::thread::sleep;
 use std::time::Duration;
 
 extern crate threadpool;
 extern crate num_cpus;
-extern crate scoped_threadpool;
 
 fn passing_type(n_jobs: usize) {
     use std::sync::mpsc;
@@ -19,7 +18,7 @@ fn passing_type(n_jobs: usize) {
 
     #[inline]
     fn term(k: usize) -> f64 {
-        let c: i8 = if (k & 1 == 0) { 1 } else { -1 };
+        let c: i8 = if k & 1 == 0 { 1 } else { -1 };
         ((4 * c) as f64) / ((2 * k + 1) as f64)
     }
 
