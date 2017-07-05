@@ -45,7 +45,9 @@ fn test_thread() {
 
     for i in 0..NTHREADS {
         // Spin up another thread
-        children.push(thread::spawn(move || println!("this is thread number {}", i)));
+        children.push(thread::spawn(
+            move || println!("this is thread number {}", i),
+        ));
     }
 
     for child in children {
@@ -97,9 +99,11 @@ fn test_map() {
     // A function to peel, chop, and cook food all in sequence.
     // We chain multiple uses of `map()` to simplify the code.
     fn process(food: Option<Food>) -> Option<Cooked> {
-        food.map(Peeled)
-            .map(|Peeled(f)| Chopped(f))
-            .map(|Chopped(f)| Cooked(f))
+        food.map(Peeled).map(|Peeled(f)| Chopped(f)).map(
+            |Chopped(f)| {
+                Cooked(f)
+            },
+        )
     }
 
     // Check whether there's food or not before trying to eat it!
@@ -161,10 +165,10 @@ fn test_macro() {
 
     // Recall that blocks are expressions too!
     print_result!({
-                      let x = 1u32;
+        let x = 1u32;
 
-                      x * x + 2 * x - 1
-                  });
+        x * x + 2 * x - 1
+    });
 }
 
 #[allow(unused_variables)]
@@ -208,7 +212,8 @@ fn test_generics() {
 
 fn test_captures() {
     fn apply<F>(f: F)
-        where F: FnOnce()
+    where
+        F: FnOnce(),
     {
         // ^ TODO: Try changing this to `Fn` or `FnMut`.
         f();
@@ -216,7 +221,8 @@ fn test_captures() {
 
     // A function which takes a closure and returns an `i32`.
     fn apply_to_3<F>(f: F) -> i32
-        where F: Fn(i32) -> i32
+    where
+        F: Fn(i32) -> i32,
     {
         f(3)
     }
@@ -311,10 +317,12 @@ fn test_constants() {
     let n = 16;
     let lang = LANGUAGE;
     println!("language is {}, lang is also {}", LANGUAGE, lang);
-    println!("{} is {}, size={}",
-             n,
-             if is_big(n) { "big" } else { "small" },
-             std::mem::size_of_val(LANGUAGE));
+    println!(
+        "{} is {}, size={}",
+        n,
+        if is_big(n) { "big" } else { "small" },
+        std::mem::size_of_val(LANGUAGE)
+    );
 }
 
 fn test_enum() {
@@ -390,7 +398,20 @@ fn test_simple() {
     #[allow(unused_variables)]
     let a_float = 3.0;
 
-    let long_tuple = (1u8, 2u16, 3u32, 4u64, -1i8, -2i16, -3i32, -4i64, 0.1f32, 0.2f64, 'a', true);
+    let long_tuple = (
+        1u8,
+        2u16,
+        3u32,
+        4u64,
+        -1i8,
+        -2i16,
+        -3i32,
+        -4i64,
+        0.1f32,
+        0.2f64,
+        'a',
+        true,
+    );
 
     let tuple_e = long_tuple.3;
     println!("3rd of {:?} is {}", long_tuple, tuple_e);
@@ -409,6 +430,18 @@ fn test_simple() {
     let _nil = Nil;
 }
 
+pub static mut foo: usize = 5;
+pub static mut bar: [u8; 10] = [0;10];
+
+fn test_copy(p:&mut i32) {
+    *p = 32;
+}
+
+struct ST {
+    i: i32,
+    s: String,
+}
+
 fn main() {
     //    test_enum();
     //    test_constants();
@@ -425,7 +458,33 @@ fn main() {
     //    test_thread();
     //    test_io();
     //    test_basic();
-    test_unsafe();
+    // test_unsafe();
+    // unsafe {
+    //     foo = 6;
+    //     bar[2] = 4;
+    // }
+    // let mut st:ST = ST{
+    //     i: 10,
+    //     s: "good".to_string(),
+    // };
+    // test_copy(&mut st.i);
+    // println!("{}", st.i);
+    //
+    test_size_of();
+}
+
+fn test_size_of() {
+    use std::mem;
+    println!("i32\t{}\t{}", mem::size_of::<Option<i32>>(), mem::size_of::<i32>());
+    println!("&str\t{}\t{}", mem::size_of::<Option<&str>>(), mem::size_of::<&str>());
+    println!("String\t{}\t{}", mem::size_of::<Option<String>>(), mem::size_of::<String>());
+    println!("&String\t{}\t{}", mem::size_of::<Option<&String>>(), mem::size_of::<&String>());
+    println!("array1\t{}\t{}", mem::size_of::<Option<[u8;40]>>(), mem::size_of::<[u8;40]>());
+    println!("array2\t{}\t{}", mem::size_of::<Option<[u64;40]>>(), mem::size_of::<[u64;40]>());
+    println!("array3\t{}\t{}", mem::size_of::<Option<[u32;40]>>(), mem::size_of::<[u32;40]>());
+    println!("array4\t{}\t{}", mem::size_of::<Option<[usize;40]>>(), mem::size_of::<[usize;40]>());
+    println!("&array1\t{}\t{}", mem::size_of::<Option<&[u8;10]>>(), mem::size_of::<&[u8;10]>());
+    println!("&array2\t{}\t{}", mem::size_of::<Option<&[u8]>>(), mem::size_of::<&[u8]>());
 }
 
 fn test_basic() {
@@ -452,8 +511,6 @@ fn test_basic() {
     let s = format!("{}-{}-{}", s1, s2, s3);
 
     println!("s1={}, s={}", s1, s);
-
-
 }
 
 fn test_unsafe() {
