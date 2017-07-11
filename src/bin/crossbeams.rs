@@ -42,11 +42,11 @@ impl MutMgr {
             //     },
             //     None => {}
             // }
-            println!(
-                "mut pool: {}/{}",
-                mut_pool.active_count(),
-                mut_pool.max_count()
-            );
+            // println!(
+            //     "mut pool: {}/{}",
+            //     mut_pool.active_count(),
+            //     mut_pool.max_count()
+            // );
             if let Ok(item) = receiver.try_recv() {
                 let tx = tx.clone();
                 mut_pool.execute(move || {
@@ -54,6 +54,9 @@ impl MutMgr {
                     // thread::sleep(Duration::new(0, 300_000_000));
                     thread::sleep(Duration::new(1, 0));
                     let mutated = item + 1;
+                    tx.send(mutated).unwrap();
+                    tx.send(mutated).unwrap();
+                    tx.send(mutated).unwrap();
                     tx.send(mutated).unwrap();
                 })
                 // mut_pool.spawn(move |item| {
@@ -93,19 +96,19 @@ struct RunMgr {}
 
 impl RunMgr {
     fn run(sender: mpsc::Sender<i32>, receiver: mpsc::Receiver<i32>) {
-        let mut_pool = ThreadPool::new(30);
-        let send_pool = ThreadPool::new(30);
+        let mut_pool = ThreadPool::new(50);
+        let send_pool = ThreadPool::new(50);
         let (tx, rx): (mpsc::Sender<i32>, mpsc::Receiver<i32>) = channel();
         let mut count = 0;
         // receive
         thread::spawn(move || {
 
             loop {
-                println!(
-                    "run pool: {}/{}",
-                    mut_pool.active_count(),
-                    mut_pool.max_count()
-                );
+                // println!(
+                //     "run pool: {}/{}",
+                //     mut_pool.active_count(),
+                //     mut_pool.max_count()
+                // );
                 match receiver.try_recv() {
                     Ok(item) => {
                         let tx = tx.clone();
@@ -113,9 +116,8 @@ impl RunMgr {
                             // let mut rng = rand::thread_rng();
                             println!("RunMgr received: {}", item);
                             // thread::sleep(Duration::new(0, rng.gen_range::<u32>(300000000u32, 600000000u32)));
-                            thread::sleep(Duration::new(3, 0));
-                            let mutated = item + 1;
-                            tx.send(mutated).unwrap();
+                            thread::sleep(Duration::new(5, 0));
+                            tx.send(item).unwrap();
                         });
                     }
                     _ => {}
@@ -154,19 +156,18 @@ impl TraceMgr {
         let mut count = 0;
         // receive
         thread::spawn(move || loop {
-            println!(
-                "trace pool: {}/{}",
-                mut_pool.active_count(),
-                mut_pool.max_count()
-            );
+            // println!(
+            //     "trace pool: {}/{}",
+            //     mut_pool.active_count(),
+            //     mut_pool.max_count()
+            // );
             match receiver.try_recv() {
                 Ok(item) => {
                     let tx = tx.clone();
                     mut_pool.execute(move || {
                         println!("TraceMgr received: {}", item);
                         thread::sleep(Duration::new(1, 0));
-                        let mutated = item + 1;
-                        tx.send(mutated).unwrap();
+                        tx.send(item).unwrap();
                     });
                 }
                 _ => {}
@@ -180,13 +181,16 @@ impl TraceMgr {
                     let sender = sender.clone();
                     send_pool.execute(move || {
                         println!("TraceMgr sending: {}", item);
-                        sender.send(item).unwrap();
+                        if (item % 3) == 0 {
+                            sender.send(item).unwrap();
+                        }
                     });
                     count += 1;
                 }
                 _ => {}
             }
             if count >= 100 {
+                sender.send(-1).unwrap();
                 panic!("TraceMgr ends!");
             }
         }
@@ -196,7 +200,7 @@ impl TraceMgr {
 fn main() {
     let mut g_q = VecDeque::with_capacity(10);
     let mut i = 0;
-    while i < 300 {
+    while i < 500 {
         g_q.push_back(i);
         i += 10;
     }
@@ -215,20 +219,43 @@ fn main() {
     let mutr = thread::spawn(move || { MutMgr::run(to_runner_sender, mutator_receiver); });
     let run = thread::spawn(move || { RunMgr::run(to_tracer_sender, runner_receiver); });
     let tra = thread::spawn(move || {
-        TraceMgr::run(to_mutator_sender, tracer_receiver);
+        TraceMgr::run(to_main_sender, tracer_receiver);
     });
 
 
-    mutr.join();
-    run.join();
-    tra.join();
+    // mutr.join();
+    // run.join();
+    // tra.join();
 
-    // loop {
-    //     // let received = main_receiver.recv().unwrap();
-    //     // println!("received from main: {}", received);
-    //     // g_q.push_back(received);
-    //     // let item = g_q.pop_front().unwrap();
-    //     // println!("qsize={}, sending from main: {}", g_q.len(), item);
-    //     // to_mutator_sender.send(item).unwrap();
-    // }
+    loop {
+        while let Some(item) = main_receiver.try_iter().next() {
+            if item < 0 {
+                panic!("Main thread ends");
+            } 
+            g_q.push_back(item);
+            println!("received from main: {}, now queue size is {}", item, g_q.len());
+        }
+
+        // match main_receiver.try_iter().next() {
+        //     Some(item) => {
+        //         for item in &main_receiver {
+        //             g_q.push_back(item);
+        //             println!("received from main: {}", item);
+        //         }
+        //     }
+        //     None => { }
+        // }
+
+        // for item in &main_receiver {
+        //     g_q.push_back(item);
+        //     println!("received from main: {}", item);
+        // }
+
+        // let received = main_receiver.recv().unwrap();
+        // g_q.push_back(received);
+        if let Some(item) = g_q.pop_front() {
+            println!("qsize={}, sending from main", g_q.len());
+            to_mutator_sender.send(item).unwrap();
+        }
+    }
 }
