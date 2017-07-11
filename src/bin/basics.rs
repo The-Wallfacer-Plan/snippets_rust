@@ -431,9 +431,9 @@ fn test_simple() {
 }
 
 pub static mut foo: usize = 5;
-pub static mut bar: [u8; 10] = [0;10];
+pub static mut bar: [u8; 10] = [0; 10];
 
-fn test_copy(p:&mut i32) {
+fn test_copy(p: &mut i32) {
     *p = 32;
 }
 
@@ -469,22 +469,76 @@ fn main() {
     // };
     // test_copy(&mut st.i);
     // println!("{}", st.i);
-    //
+
     test_size_of();
 }
 
 fn test_size_of() {
     use std::mem;
-    println!("i32\t{}\t{}", mem::size_of::<Option<i32>>(), mem::size_of::<i32>());
-    println!("&str\t{}\t{}", mem::size_of::<Option<&str>>(), mem::size_of::<&str>());
-    println!("String\t{}\t{}", mem::size_of::<Option<String>>(), mem::size_of::<String>());
-    println!("&String\t{}\t{}", mem::size_of::<Option<&String>>(), mem::size_of::<&String>());
-    println!("array1\t{}\t{}", mem::size_of::<Option<[u8;40]>>(), mem::size_of::<[u8;40]>());
-    println!("array2\t{}\t{}", mem::size_of::<Option<[u64;40]>>(), mem::size_of::<[u64;40]>());
-    println!("array3\t{}\t{}", mem::size_of::<Option<[u32;40]>>(), mem::size_of::<[u32;40]>());
-    println!("array4\t{}\t{}", mem::size_of::<Option<[usize;40]>>(), mem::size_of::<[usize;40]>());
-    println!("&array1\t{}\t{}", mem::size_of::<Option<&[u8;10]>>(), mem::size_of::<&[u8;10]>());
-    println!("&array2\t{}\t{}", mem::size_of::<Option<&[u8]>>(), mem::size_of::<&[u8]>());
+    struct Foo<T, U> {
+        count: u16,
+        data1: T,
+        data2: U,
+    }
+
+    enum BufCmp {
+        Same,
+        Diffs(usize, usize),
+    }
+
+    println!("size(usize)={}, size(BufCmp)={}", mem::size_of::<usize>(), mem::size_of::<BufCmp>());
+    println!("u16-u32: {}", mem::size_of::<Foo<u16, u32>>());
+    println!("u32-u16: {}", mem::size_of::<Foo<u32, u16>>());
+    println!(
+        "i32\t{}\t{}",
+        mem::size_of::<Option<i32>>(),
+        mem::size_of::<i32>()
+    );
+    println!(
+        "&str\t{}\t{}",
+        mem::size_of::<Option<&str>>(),
+        mem::size_of::<&str>()
+    );
+    println!(
+        "String\t{}\t{}",
+        mem::size_of::<Option<String>>(),
+        mem::size_of::<String>()
+    );
+    println!(
+        "&String\t{}\t{}",
+        mem::size_of::<Option<&String>>(),
+        mem::size_of::<&String>()
+    );
+    println!(
+        "array1\t{}\t{}",
+        mem::size_of::<Option<[u8; 40]>>(),
+        mem::size_of::<[u8; 40]>()
+    );
+    println!(
+        "array2\t{}\t{}",
+        mem::size_of::<Option<[u64; 40]>>(),
+        mem::size_of::<[u64; 40]>()
+    );
+    println!(
+        "array3\t{}\t{}",
+        mem::size_of::<Option<[u32; 40]>>(),
+        mem::size_of::<[u32; 40]>()
+    );
+    println!(
+        "array4\t{}\t{}",
+        mem::size_of::<Option<[usize; 40]>>(),
+        mem::size_of::<[usize; 40]>()
+    );
+    println!(
+        "&array1\t{}\t{}",
+        mem::size_of::<Option<&[u8; 10]>>(),
+        mem::size_of::<&[u8; 10]>()
+    );
+    println!(
+        "&array2\t{}\t{}",
+        mem::size_of::<Option<&[u8]>>(),
+        mem::size_of::<&[u8]>()
+    );
 }
 
 fn test_basic() {

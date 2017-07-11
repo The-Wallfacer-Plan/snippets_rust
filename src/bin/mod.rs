@@ -14,6 +14,6 @@ mod outermost {
 fn main() {
     outermost::middle_function();
     // outermost::middle_secret_function(); // cannot call this one here
-    outermost::inside::inner_function();
+    // outermost::inside::inner_function();
     // outermost::inside::secret_function();
 }

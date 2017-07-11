@@ -36,18 +36,77 @@ fn use_thread_pool() {
     use threadpool::ThreadPool;
     use std::sync::mpsc::channel;
     use std::sync::mpsc;
+    use std::thread;
+    use std::time::Duration;
 
     let n_workers = num_cpus::get() / 2;
     let n_jobs = num_cpus::get() - 2;
     let pool = ThreadPool::new(n_workers);
 
     let (tx, rx): (mpsc::Sender<i32>, mpsc::Receiver<i32>) = channel();
-    for _ in 0..n_jobs {
-        let tx = tx.clone();
-        pool.execute(move || { tx.send(1).unwrap(); });
+    // pool.execute(move || {
+    //     let mut i = 0;
+    //     loop {
+    //         i += 2;
+    //         thread::sleep(Duration::new(1, 0));
+    //         tx.send(i).unwrap();
+    //     }
+    // });
+    // // pool.execute(move || loop {
+    //     let received = rx.recv().unwrap();
+    //     println!("got {}", received);
+    // });
+    ///
+    let (tx1, rx1): (mpsc::Sender<i32>, mpsc::Receiver<i32>) = channel();
+    thread::spawn(move || {
+        // let mut i = 0;
+        let (tx3, rx3): (mpsc::Sender<i32>, mpsc::Receiver<i32>) = channel();
+        let pool1 = ThreadPool::new(10);
+        // loop {
+        // i += 3;
+        thread::spawn(move || loop {
+            let received = rx.recv().unwrap();
+            println!("got {}", received);
+            pool1.execute(move || {
+                println!("runner run!!!!");
+                tx3.send(received).unwrap();
+            });
+        });
+        thread::spawn(move || {
+            let received = rx3.recv().unwrap();
+
+            let mut i = 0;
+            loop {
+                tx1.send(received).unwrap();
+                thread::sleep(Duration::new(1, 0));
+            }
+        });
+        // let received = rx.recv().unwrap();
+        // println!("got {}", received);
+        // thread::sleep(Duration::new(0, 500000000));
+        // }
+    });
+    // thread::sleep(Duration::new(1, 0));
+    thread::spawn(move || {
+        let pool2 = ThreadPool::new(2);
+        pool2.execute(move || loop {
+            let received = rx1.recv().unwrap();
+            println!("have {}", received);
+        });
+        pool2.execute(move || {
+            let mut i = 0;
+            loop {
+                i += 2;
+                tx.send(i).unwrap();
+                thread::sleep(Duration::new(0, 500000000));
+            }
+        });
+    });
+    ///
+    loop {
+        println!("main");
+        thread::sleep(Duration::new(1, 0));
     }
-    let res = rx.iter().take(n_jobs).fold(0, |a, b| a + b);
-    println!("res={}", res);
 }
 
 fn shared() {
@@ -79,7 +138,7 @@ fn channels() {
 
 fn main() {
     // channels();
-    // use_thread_pool();
-    let n = 4967296;
-    passing_type(n);
+    use_thread_pool();
+    // let n = 4967296;
+    // passing_type(n);
 }
