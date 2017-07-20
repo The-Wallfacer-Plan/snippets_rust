@@ -2,6 +2,9 @@ extern crate redis;
 use redis::{Client, Commands, Connection};
 extern crate time;
 use time::PreciseTime;
+use std::thread;
+use std::thread::sleep;
+use std::time::Duration;
 
 static QUERY_INACTIVE: &'static str= "entry_inactive";
 static QUERY_TRIM_DONE: &'static str= "entry_trim_done";
@@ -9,20 +12,6 @@ static QUERY_WAS_FUZZED: &'static str= "entry_was_fuzzed";
 static QUERY_PASSED_DET: &'static str= "entry_passed_det";
 static QUERY_VAR_BEHAVIOR: &'static str= "entry_var_behavior";
 static QUERY_FAVORED: &'static str= "entry_favored";
-
-// static aquery_len: &'static str= "_len";
-// static aquery_cal_failed: &'static str= "_cal_failed";
-// static aquery_bitmap_size: &'static str= "_bitmap_size";
-// static aquery_path_stat: &'static str= "_path_stat";
-// static aquery_children: &'static str= "_children";
-// static aquery_src: &'static str= "_src";
-// static aquery_exec_cksum: &'static str= "_exec_cksum";
-// static aquery_exec_us: &'static str= "_exec_us";
-// static aquery_handicap: &'static str= "_handicap";
-// static aquery_depth: &'static str= "_depth";
-// static aquery_touch_count: &'static str= "_touch_count";
-// static aquery_mut_opt: &'static str= "_mut_opt";
-
 
 #[derive(Default)]
 pub struct QEntry {
@@ -156,51 +145,97 @@ fn load_queue_item(conn: &Connection, id: usize) -> Option<QEntry> {
 fn main() {
 
     let g_start = PreciseTime::now();
-    let con_start = PreciseTime::now();
-    let client = Client::open("redis://127.0.0.1/").unwrap();
-    let conn = client.get_connection().unwrap();
-    let con_end = PreciseTime::now();
-    println!("{} seconds for connecting to server", con_start.to(con_end));
-
-    let entry1 = QEntry {
-        inactive: false,
-        len: 20,
-        cal_failed: 0,
-        trim_done: true,
-        was_fuzzed: true,
-        passed_det: true,
-        var_behavior: false,
-        favored: true,
-        bitmap_size: 256,
-        path_stat: 2,
-        id: 1,
-        src: 0,
-        exec_cksum: 67890,
-        exec_us: 566,
-        handicap: 0,
-        depth: 0,
-        touch_count: 1,
-        mut_opt: 2,
-    };
-    
-    let store_start = PreciseTime::now();
-    store_queue_item(&conn, &entry1);
-    let store_end = PreciseTime::now();
-    println!("{} seconds for storing to server", store_start.to(store_end));
-
-    let load_start = PreciseTime::now();
-    let entry2 = load_queue_item(&conn, entry1.id);
-    let load_end = PreciseTime::now();
-    println!("{} seconds for loading from server", load_start.to(load_end));
-
-    match entry2 {
-        Some(e) => {
-            println!("\tentry2: id is {}, len is {}", e.id, e.len);
-        },
-        _ => {
-            println!("\tDidn't get entry2");
-        }
+    let mut threads = vec![];
+    for i in 0..4 {
+        let sleep_time: u32 = (10000000 * i) as u32; // ns -> 0.01s
+        threads.push(thread::spawn(move || {
+            let client = Client::open("redis://127.0.0.1/").unwrap();
+            let conn = client.get_connection().unwrap();
+            let mut src = 0;
+            for j in 0..2500 {
+                let id = (i + 1) * (j + 1);
+                if j % 10 == 0 {
+                    src = id;
+                    println!("\tThread {} did ten works", i);
+                }
+                let temp_entry = QEntry {
+                    inactive: false,
+                    len: 20,
+                    cal_failed: 0,
+                    trim_done: true,
+                    was_fuzzed: true,
+                    passed_det: true,
+                    var_behavior: false,
+                    favored: true,
+                    bitmap_size: 256,
+                    path_stat: 2,
+                    id: id,
+                    src: src,
+                    exec_cksum: 67890,
+                    exec_us: 566,
+                    handicap: 0,
+                    depth: 0,
+                    touch_count: 1,
+                    mut_opt: 2,
+                };
+                store_queue_item(&conn, &temp_entry);
+                load_queue_item(&conn, temp_entry.id);
+                sleep(Duration::new(0, sleep_time));
+            }
+            println!("Thread {} finished", i);
+        }));
+        println!("Spawned thread {}, sleeping interval: {}ns", i, sleep_time);
     }
+
+    for thread_ in threads {
+        let _ = thread_.join();
+    }
+
+    // let con_start = PreciseTime::now();
+    // let client = Client::open("redis://127.0.0.1/").unwrap();
+    // let conn = client.get_connection().unwrap();
+    // let con_end = PreciseTime::now();
+    // println!("{} seconds for connecting to server", con_start.to(con_end));
+
+    // let entry1 = QEntry {
+    //     inactive: false,
+    //     len: 20,
+    //     cal_failed: 0,
+    //     trim_done: true,
+    //     was_fuzzed: true,
+    //     passed_det: true,
+    //     var_behavior: false,
+    //     favored: true,
+    //     bitmap_size: 256,
+    //     path_stat: 2,
+    //     id: 1,
+    //     src: 0,
+    //     exec_cksum: 67890,
+    //     exec_us: 566,
+    //     handicap: 0,
+    //     depth: 0,
+    //     touch_count: 1,
+    //     mut_opt: 2,
+    // };
+    
+    // let store_start = PreciseTime::now();
+    // store_queue_item(&conn, &entry1);
+    // let store_end = PreciseTime::now();
+    // println!("{} seconds for storing to server", store_start.to(store_end));
+
+    // let load_start = PreciseTime::now();
+    // let entry2 = load_queue_item(&conn, entry1.id);
+    // let load_end = PreciseTime::now();
+    // println!("{} seconds for loading from server", load_start.to(load_end));
+
+    // match entry2 {
+    //     Some(e) => {
+    //         println!("\tentry2: id is {}, len is {}", e.id, e.len);
+    //     },
+    //     _ => {
+    //         println!("\tDidn't get entry2");
+    //     }
+    // }
     
     let g_end = PreciseTime::now();
     println!("{} seconds for the whole run", g_start.to(g_end));
