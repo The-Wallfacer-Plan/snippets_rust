@@ -1,14 +1,14 @@
 extern crate redis;
-use redis::{Client, Commands, Connection, RedisResult};
+use redis::{Client, Commands, Connection};
 extern crate time;
 use time::PreciseTime;
 
-static query_inactive: &'static str= "entry_inactive";
-static query_trim_done: &'static str= "entry_trim_done";
-static query_was_fuzzed: &'static str= "entry_was_fuzzed";
-static query_passed_det: &'static str= "entry_passed_det";
-static query_var_behavior: &'static str= "entry_var_behavior";
-static query_favored: &'static str= "entry_favored";
+static QUERY_INACTIVE: &'static str= "entry_inactive";
+static QUERY_TRIM_DONE: &'static str= "entry_trim_done";
+static QUERY_WAS_FUZZED: &'static str= "entry_was_fuzzed";
+static QUERY_PASSED_DET: &'static str= "entry_passed_det";
+static QUERY_VAR_BEHAVIOR: &'static str= "entry_var_behavior";
+static QUERY_FAVORED: &'static str= "entry_favored";
 
 // static aquery_len: &'static str= "_len";
 // static aquery_cal_failed: &'static str= "_cal_failed";
@@ -77,12 +77,12 @@ fn store_queue_item(conn: &Connection, entry: &QEntry) {
     let _: () = conn.set(query_touch_count, entry.touch_count).unwrap();
     let _: () = conn.set(query_mut_opt, entry.mut_opt).unwrap();
 
-    let _: () = redis::cmd("setbit").arg("query_inactive").arg(id).arg(entry.inactive as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("query_trim_done").arg(id).arg(entry.trim_done as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("query_was_fuzzed").arg(id).arg(entry.was_fuzzed as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("query_passed_det").arg(id).arg(entry.passed_det as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("query_var_behavior").arg(id).arg(entry.var_behavior as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("query_favored").arg(id).arg(entry.favored as u8).query(conn).unwrap();
+    let _: () = redis::cmd("setbit").arg("QUERY_INACTIVE").arg(id).arg(entry.inactive as u8).query(conn).unwrap();
+    let _: () = redis::cmd("setbit").arg("QUERY_TRIM_DONE").arg(id).arg(entry.trim_done as u8).query(conn).unwrap();
+    let _: () = redis::cmd("setbit").arg("QUERY_WAS_FUZZED").arg(id).arg(entry.was_fuzzed as u8).query(conn).unwrap();
+    let _: () = redis::cmd("setbit").arg("QUERY_PASSED_DET").arg(id).arg(entry.passed_det as u8).query(conn).unwrap();
+    let _: () = redis::cmd("setbit").arg("QUERY_VAR_BEHAVIOR").arg(id).arg(entry.var_behavior as u8).query(conn).unwrap();
+    let _: () = redis::cmd("setbit").arg("QUERY_FAVORED").arg(id).arg(entry.favored as u8).query(conn).unwrap();
     let _: () = conn.sadd(query_children, id).unwrap();
 
 }
@@ -118,12 +118,12 @@ fn load_queue_item(conn: &Connection, id: usize) -> Option<QEntry> {
     let touch_count = conn.get(query_touch_count).unwrap_or(0);
     let mut_opt = conn.get(query_mut_opt).unwrap_or(0);
 
-    let inactive = conn.getbit(query_inactive, id).unwrap_or(0) != 0;
-    let trim_done = conn.getbit(query_trim_done, id).unwrap_or(0) != 0;
-    let was_fuzzed = conn.getbit(query_was_fuzzed, id).unwrap_or(0) != 0;
-    let passed_det = conn.getbit(query_passed_det, id).unwrap_or(0) != 0;
-    let var_behavior = conn.getbit(query_var_behavior, id).unwrap_or(0) != 0;
-    let favored = conn.getbit(query_favored, id).unwrap_or(0) != 0;
+    let inactive = conn.getbit(QUERY_INACTIVE, id).unwrap_or(0) != 0;
+    let trim_done = conn.getbit(QUERY_TRIM_DONE, id).unwrap_or(0) != 0;
+    let was_fuzzed = conn.getbit(QUERY_WAS_FUZZED, id).unwrap_or(0) != 0;
+    let passed_det = conn.getbit(QUERY_PASSED_DET, id).unwrap_or(0) != 0;
+    let var_behavior = conn.getbit(QUERY_VAR_BEHAVIOR, id).unwrap_or(0) != 0;
+    let favored = conn.getbit(QUERY_FAVORED, id).unwrap_or(0) != 0;
 
     Some(QEntry {
         inactive: inactive,
