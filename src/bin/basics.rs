@@ -6,7 +6,7 @@ use std::fmt;
 
 use std::thread;
 
-use mylib::scoping;
+use mylib::test_lib;
 
 fn test_io() {
     // open.rs
@@ -267,45 +267,6 @@ fn test_collections() {
     println!("2 in array2: {}", array2.into_iter().any(|&x| x == 2));
 }
 
-fn test_lambda() {
-    let closure_inferred = |i| i + 1;
-    let i = 1_i32;
-    println!("closure_inferred: {}", closure_inferred(i));
-    //    println!("another: {}", closure_inferred(2_u32));
-}
-
-#[allow(unused_variables)]
-fn test_optional() {
-    let number: Option<u32> = None;
-
-    if let Some(i) = number {
-        println!("matched: i");
-    }
-}
-
-fn test_ptr_ref() {
-    let reference = &4;
-    match reference {
-        val => println!("got a value via destructing {}", val),
-    }
-
-    #[allow(toplevel_ref_arg)]
-    let ref _is_a_reference = 3; // this is bad practice
-    let value = 5;
-    let mut mut_value = 6;
-
-    match value {
-        ref r => println!("got a ref to a value {:?}", r),
-    }
-
-    match mut_value {
-        ref mut m => {
-            *m += 10;
-            println!("now value changed to {}", m);
-        }
-    }
-}
-
 fn test_constants() {
     static LANGUAGE: &'static str = "rustc";
     const THRESHOLD: i32 = 10;
@@ -323,44 +284,6 @@ fn test_constants() {
         if is_big(n) { "big" } else { "small" },
         std::mem::size_of_val(LANGUAGE)
     );
-}
-
-fn test_enum() {
-    enum Person {
-        // An `enum` may either be `unit-like`,
-        Engineer,
-        Scientist,
-        // like tuple structs,
-        Height(i32),
-        Weight(i32),
-        // or like structures.
-        Info { name: String, height: i32 },
-    }
-
-    fn inspect(p: Person) {
-        match p {
-            Person::Engineer => println!("engineer"),
-            Person::Scientist => println!("scientist"),
-            Person::Height(i) => println!("has height {}", i),
-            Person::Weight(i) => println!("has weight {}", i),
-            Person::Info { name, height } => println!("{} is {} tall.", name, height),
-        }
-    }
-
-    let dave = Person::Info {
-        name: "Dave".to_owned(),
-        height: 72,
-    };
-    inspect(dave);
-
-    ///////////////////////////////////////////////////////////////////////////
-    enum Number {
-        Zero,
-        One,
-        Two,
-    }
-
-    println!("zero is {}", Number::Zero as i32);
 }
 
 fn test_simple() {
@@ -433,43 +356,12 @@ fn test_simple() {
 pub static mut foo: usize = 5;
 pub static mut bar: [u8; 10] = [0; 10];
 
-fn test_copy(p: &mut i32) {
-    *p = 32;
-}
-
 struct ST {
     i: i32,
     s: String,
 }
 
 fn main() {
-    //    test_enum();
-    //    test_constants();
-    //    test_ptr_ref();
-    //    test_optional();
-    //    test_lambda();
-    //    test_captures();
-    //    test_collections();
-
-    //    test_generics();
-
-    //    scoping::scoping_main();
-
-    //    test_thread();
-    //    test_io();
-    //    test_basic();
-    // test_unsafe();
-    // unsafe {
-    //     foo = 6;
-    //     bar[2] = 4;
-    // }
-    // let mut st:ST = ST{
-    //     i: 10,
-    //     s: "good".to_string(),
-    // };
-    // test_copy(&mut st.i);
-    // println!("{}", st.i);
-
     test_size_of();
 }
 
@@ -486,7 +378,11 @@ fn test_size_of() {
         Diffs(usize, usize),
     }
 
-    println!("size(usize)={}, size(BufCmp)={}", mem::size_of::<usize>(), mem::size_of::<BufCmp>());
+    println!(
+        "size(usize)={}, size(BufCmp)={}",
+        mem::size_of::<usize>(),
+        mem::size_of::<BufCmp>()
+    );
     println!("u16-u32: {}", mem::size_of::<Foo<u16, u32>>());
     println!("u32-u16: {}", mem::size_of::<Foo<u32, u16>>());
     println!(
@@ -539,37 +435,4 @@ fn test_size_of() {
         mem::size_of::<Option<&[u8]>>(),
         mem::size_of::<&[u8]>()
     );
-}
-
-fn test_basic() {
-    let s1 = String::from("hello");
-
-    #[derive(Debug)]
-    enum IpAddrKind {
-        V4,
-        V6,
-    }
-
-    let four = IpAddrKind::V4;
-
-    fn route(ip_type: &IpAddrKind) {}
-
-    route(&four);
-
-    println!("four={:?}", four);
-
-    let s1 = String::from("tic");
-    let s2 = String::from("tac");
-    let s3 = String::from("toe");
-
-    let s = format!("{}-{}-{}", s1, s2, s3);
-
-    println!("s1={}, s={}", s1, s);
-}
-
-fn test_unsafe() {
-    let u: &[u8] = &[49, 50, 51];
-    unsafe {
-        assert_eq!(u, std::mem::transmute::<&str, &[u8]>("123"));
-    }
 }
