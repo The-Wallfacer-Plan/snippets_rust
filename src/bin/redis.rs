@@ -148,6 +148,7 @@ fn main() {
     let mut threads = vec![];
     for i in 0..4 {
         let sleep_time: u32 = (10000000 * i) as u32; // ns -> 0.01s
+        // let sleep_time: u32 = 10000000;
         threads.push(thread::spawn(move || {
             let client = Client::open("redis://127.0.0.1/").unwrap();
             let conn = client.get_connection().unwrap();

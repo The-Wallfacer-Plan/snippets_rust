@@ -16,7 +16,7 @@ fn test_io() {
     use std::path::Path;
 
     // Create a path to the desired file
-    let path = Path::new("examples/hello.txt");
+    let path = Path::new("examples/no_kitty.png");
     let display = path.display();
 
     // Open the path in read-only mode, returns `io::Result<File>`
@@ -362,7 +362,7 @@ struct ST {
 }
 
 fn main() {
-    test_size_of();
+    test_io();
 }
 
 fn test_size_of() {
