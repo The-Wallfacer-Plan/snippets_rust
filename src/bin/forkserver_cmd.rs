@@ -1,7 +1,8 @@
 extern crate libc;
 extern crate errno;
 use libc::{c_int, pid_t, c_void, size_t, ssize_t, pipe, fork, dup2, close, read};
-use std::env::{set_var};
+use std::env;
+use std::collections::HashMap;
 use std::thread;
 use std::process::Command;
 use std::os::unix::process::CommandExt;
@@ -32,7 +33,12 @@ fn main() {
                 // code under this if will run in the children
                 if forksrv_pid == 0 {
                     let ctl_fd = FORKSRV_FD + 2 * i;
-                    set_var(PIPE_ENV_VAR, ctl_fd.to_string());
+                    // set_var(PIPE_ENV_VAR, ctl_fd.to_string());
+                    let mut filtered_env : HashMap<String, String> = env::vars().filter(|&(ref k, _)|
+                        k == "TERM" || k == "TZ" || k == "LANG" || k == "PATH"
+                    ).collect();
+                    filtered_env.insert(String::from(PIPE_ENV_VAR), ctl_fd.to_string());
+
                     let new_ctl_pipe = dup2(ctl_pipe[0], ctl_fd);
                     let new_st_pipe = dup2(st_pipe[1], ctl_fd + 1);
                     if new_ctl_pipe < 0 {
@@ -51,6 +57,7 @@ fn main() {
                     println!("Thread{}: calling exec cmd", i);
                     // execv(CString::new("examples/main").unwrap().as_ptr(), argv.as_ptr());
                     Command::new("examples/main")
+                        .envs(&filtered_env)
                         .exec();
                     panic!("Thread{}: cmd exec failed", i);
                 }
