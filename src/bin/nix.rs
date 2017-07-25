@@ -13,6 +13,7 @@ use tempdir::TempDir;
 use tempfile::NamedTempFile;
 use std::io::prelude::*;
 use std::os::unix::fs;
+use std::os::unix::process::CommandExt;
 
 // 1. wait for a special time
 // 2. execvp
@@ -24,38 +25,46 @@ fn run_cmd() {
     // FIXME error, don't know why
     use std::ptr;
     // let argvs = vec![CString::new("/usr/bin/printenv").unwrap(), CString::new("MY_VAR").unwrap()];
-    let argvs: Vec<CString> = vec![CString::new("/usr/bin/printenv").unwrap()];
-    let argv_ptr: *const *const c_char = {
-        println!("argv={:?}", argvs);
-        let mut p_argv: Vec<_> = argvs.iter().map(|a| a.as_ptr()).collect();
-        p_argv.push(ptr::null());
-        let p: *const *const c_char = p_argv.as_ptr();
-        p
-    };
-    // let envps = vec![CString::new("MY_VAR=lol").unwrap()];
-    let envps: Vec<CString> = vec![];
-    let env_ptr: *const *const c_char = {
-        println!("envp={:?}", envps);
-        let mut p_argv: Vec<_> = envps.iter().map(|a| a.as_ptr()).collect();
-        p_argv.push(ptr::null());
-        let p: *const *const c_char = p_argv.as_ptr();
-        p
-    };
-    let bin = CString::new("/usr/bin/printenv").unwrap();
-    let bin_ptr: *const c_char = bin.as_ptr();
-    let res = unsafe { execve(bin_ptr, argv_ptr, env_ptr) };
-    if res == -1 {
-        rperror("execve");
+    // let argvs = vec![CString::new("MY_VAR").unwrap().as_ptr(), ptr::null()];
+    let argvs = vec![
+        CString::new(" hello").unwrap().as_ptr(),
+        CString::new(" world").unwrap().as_ptr(),
+        ptr::null(),
+    ];
+    // let argv_ptr: *const *const c_char = {
+    //     println!("argv={:?}", argvs);
+    //     let mut p_argv: Vec<_> = argvs.iter().map(|a| a.as_ptr()).collect();
+    //     p_argv.push(ptr::null());
+    //     let p: *const *const c_char = p_argv.as_ptr();
+    //     p
+    // };
+    let argv_ptr = argvs.as_ptr();
+    let envps = vec![CString::new("MY_VAR=lol").unwrap().as_ptr(), ptr::null()];
+    // let envps = vec![CString::new("MY_VAR=lol").unwrap().as_ptr(), ptr::null()];
+    // let envps = vec![];
+    // let env_ptr: *const *const c_char = {
+    //     println!("envp={:?}", envps);
+    //     let mut p_argv: Vec<_> = envps.iter().map(|a| a.as_ptr()).collect();
+    //     p_argv.push(ptr::null());
+    //     let p: *const *const c_char = p_argv.as_ptr();
+    //     p
+    // };
+    let env_ptr = envps.as_ptr();
+    let bin = CString::new("./a.out").unwrap();
+    let bin_ptr = bin.as_ptr();
+    unsafe {
+        execve(bin_ptr, argv_ptr, env_ptr);
     }
+    rperror("execve");
 }
 
 fn run_it() {
     use std::process::Command;
-    Command::new("printenv")
+    let r = Command::new("./a.out")
         .args(&["MY_VAR"])
         .env("MY_VAR", "lol")
-        .spawn()
-        .expect("correct");
+        .exec();
+    println!("==>{:?}", r);
 }
 
 fn rperror(s: &str) {
@@ -76,6 +85,7 @@ fn fork_child() -> pid_t {
         if p == 0 {
             println!("child working...");
             run_it();
+            // run_cmd();
             sleep(2);
             println!("child exit");
             _exit(0);
