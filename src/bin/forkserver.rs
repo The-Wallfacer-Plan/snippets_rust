@@ -23,8 +23,8 @@ fn main() {
             panic!("fork() failed!");
         }
 
-        // code under this if will run in the parent
-        if forksrv_pid != 0 {
+        // code under this if will run in the child
+        if forksrv_pid == 0 {
             let ctl_fd = FORKSRV_FD + 2;
             set_var(PIPE_ENV_VAR, ctl_fd.to_string());
             let new_ctl_pipe = dup2(ctl_pipe[0], ctl_fd);
