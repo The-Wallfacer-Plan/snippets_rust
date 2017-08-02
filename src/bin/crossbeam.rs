@@ -9,7 +9,7 @@ use simd::u8x16;
 use crossbeam::{Scope, scope};
 use crossbeam::sync::SegQueue;
 use std::u8;
-use std::ops::BitAnd;
+use std::ops::{BitAnd, BitOr};
 use test::Bencher;
 
 fn main() {
@@ -22,13 +22,20 @@ fn main() {
         for mut i in &mut (*virgin_bits) {
             scope.spawn(move || {
                 println!("prev element: {:?}", i);
-                *i = (*i).bitand(u8x16::splat(0u8));
+                *i = (*i).bitand(u8x16::splat(35u8));
                 // *i &= u8x16::splat(0u8); cannot use &= ????
                 println!("after element: {:?}", i);
             });
         }
 
     });
+
+    // single thread test
+    for mut i in &mut (*virgin_bits).iter_mut() {
+        println!("\tprev element: {:?}", i);
+        *i = (*i).bitor(u8x16::splat(u8::MAX));
+        println!("\tafter element: {:?}", i);
+    }
 }
 
 #[bench]
@@ -76,5 +83,34 @@ fn simd_u8x16(b: &mut Bencher) {
             }
 
         });
+    });
+}
+
+#[bench]
+fn naive_single_thread(b: &mut Bencher) {
+
+    b.iter(move || {
+        const MAP_SIZE: usize = 128;
+        let mut virgin_bits = Box::new([[u8::MAX; 16]; MAP_SIZE]);
+
+        for mut i in &mut (*virgin_bits).iter_mut() {
+            for j in 0..16 {
+                i[j] &= 35u8;
+            }
+        }
+
+    });
+}
+
+#[bench]
+fn simd_u8x16_single_thread(b: &mut Bencher) {
+    b.iter(move || {
+        const MAP_SIZE: usize = 128;
+        let mut virgin_bits = Box::new([u8x16::splat(u8::MAX); MAP_SIZE]);
+        
+        for mut i in &mut (*virgin_bits).iter_mut() {
+            *i = (*i).bitand(u8x16::splat(35u8));
+        }
+
     });
 }
