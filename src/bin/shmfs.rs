@@ -59,8 +59,8 @@ pub fn main() {
                     let wait_status = waitpid(child, None);
                     match wait_status {
                         Ok(WaitStatus::Exited(_, _)) => {
-                            let slice = [0u8; SIZE];
-                            let pa: *mut libc::c_char = attach_shm(shm_id);
+                            let mut slice = [0u8; SIZE];
+                            let pa = attach_shm(shm_id) as *mut u8;
                             // let slice = CStr::from_ptr(pa);
                             let pa_s = ::std::slice::from_raw_parts(pa, SIZE);
                             slice.copy_from_slice(pa_s);

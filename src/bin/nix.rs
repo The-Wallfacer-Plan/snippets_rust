@@ -59,10 +59,12 @@ fn run_cmd() {
 }
 
 fn run_it() {
-    use std::process::Command;
+    use std::process::{Command, Stdio};
     let r = Command::new("./a.out")
         .args(&["MY_VAR"])
         .env("MY_VAR", "lol")
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
         .exec();
     println!("==>{:?}", r);
 }
