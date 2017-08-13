@@ -8,13 +8,15 @@ dependencies = [
  "chan 0.1.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "chan-signal 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "crossbeam 0.2.10 (registry+https://github.com/rust-lang/crates.io-index)",
+ "envy 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "errno 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "fs2 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "fs_extra 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures 0.1.14 (registry+https://github.com/rust-lang/crates.io-index)",
+ "fxhash 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "hex 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "hyper 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "libc 0.2.24 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.24 (git+https://github.com/rust-lang/libc)",
  "log 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "log4rs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "memmap 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -38,6 +40,7 @@ dependencies = [
  "time 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio-core 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "twox-hash 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 1.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -184,6 +187,14 @@ version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "envy"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "serde 1.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "errno"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -260,6 +271,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "futures 0.1.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "num_cpus 1.6.2 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "fxhash"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "byteorder 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -970,6 +989,14 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "twox-hash"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "typemap"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1105,6 +1132,7 @@ dependencies = [
 "checksum crossbeam 0.2.10 (registry+https://github.com/rust-lang/crates.io-index)" = "0c5ea215664ca264da8a9d9c3be80d2eaf30923c259d03e870388eb927508f97"
 "checksum dtoa 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)" = "80c8b71fd71146990a9742fc06dcbbde19161a267e0ad4e572c35162f4578c90"
 "checksum either 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "18785c1ba806c258137c937e44ada9ee7e69a37e3c72077542cd2f069d78562a"
+"checksum envy 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)" = "2449f419299a906fd26db30505518647644533e6a84fb653748f2623722e5265"
 "checksum errno 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "b2c858c42ac0b88532f48fca88b0ed947cad4f1f64d904bcd6c9f138f7b95d70"
 "checksum filetime 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)" = "5363ab8e4139b8568a6237db5248646e5a8a2f89bd5ccb02092182b11fd3e922"
 "checksum flate2 0.2.19 (registry+https://github.com/rust-lang/crates.io-index)" = "36df0166e856739905cd3d7e0b210fe818592211a008862599845e012d8d304c"
@@ -1115,6 +1143,7 @@ dependencies = [
 "checksum fsevent-sys 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)" = "1a772d36c338d07a032d5375a36f15f9a7043bf0cb8ce7cee658e037c6032874"
 "checksum futures 0.1.14 (registry+https://github.com/rust-lang/crates.io-index)" = "4b63a4792d4f8f686defe3b39b92127fea6344de5d38202b2ee5a11bbbf29d6a"
 "checksum futures-cpupool 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "a283c84501e92cade5ea673a2a7ca44f71f209ccdd302a3e0896f50083d2c5ff"
+"checksum fxhash 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "c31b6d751ae2c7f11320402d34e41349dd1016f8d5d45e48c4312bc8625af50c"
 "checksum gcc 0.3.51 (registry+https://github.com/rust-lang/crates.io-index)" = "120d07f202dcc3f72859422563522b66fe6463a4c513df062874daad05f85f0a"
 "checksum hex 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d6a22814455d41612f41161581c2883c0c6a1c41852729b17d5ed88f01e153aa"
 "checksum httparse 1.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "af2f2dd97457e8fb1ae7c5a420db346af389926e36f43768b96f101546b04a07"
@@ -1199,6 +1228,7 @@ dependencies = [
 "checksum tokio-service 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "24da22d077e0f15f55162bdbdc661228c1581892f52074fb242678d015b45162"
 "checksum toml 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "b0601da6c97135c8d330c7a13a013ca6cd4143221b01de2f8d4edc50a9e551c7"
 "checksum traitobject 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "efd1f82c56340fdf16f2a953d7bda4f8fdffba13d93b00844c25572110b26079"
+"checksum twox-hash 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "475352206e7a290c5fccc27624a163e8d0d115f7bb60ca18a64fc9ce056d7435"
 "checksum typemap 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "653be63c80a3296da5551e1bfd2cca35227e13cdd08c6668903ae2f4f77aa1f6"
 "checksum unicase 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2e01da42520092d0cd2d6ac3ae69eb21a22ad43ff195676b86f8c37f487d6b80"
 "checksum unicode-bidi 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "a6a2c4e3710edd365cd7e78383153ed739fa31af19f9172f72d3575060f5a43a"
