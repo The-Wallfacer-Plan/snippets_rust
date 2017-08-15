@@ -183,6 +183,7 @@ fn main() {
                 load_queue_item(&conn, temp_entry.id);
                 sleep(Duration::new(0, sleep_time));
             }
+            sleep(Duration::new(600, 0));
             println!("Thread {} finished", i);
         }));
         println!("Spawned thread {}, sleeping interval: {}ns", i, sleep_time);
