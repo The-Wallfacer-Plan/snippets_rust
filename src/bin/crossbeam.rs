@@ -14,7 +14,7 @@ use test::Bencher;
 
 fn main() {
     // let queue = SegQueue::new();
-    const MAP_SIZE: usize = 4;
+    const MAP_SIZE: usize = 8;
     let mut virgin_bits = Box::new([u8x16::splat(u8::MAX); MAP_SIZE]);
     // let trace_bits = Box::new([u8x16::splat(0u8); MAP_SIZE]);
 
@@ -108,7 +108,7 @@ fn simd_u8x16_single_thread(b: &mut Bencher) {
     b.iter(move || {
         const MAP_SIZE: usize = 50;
         let mut virgin_bits = Box::new([u8x16::splat(u8::MAX); MAP_SIZE]);
-        
+
         for mut i in &mut (*virgin_bits).iter_mut() {
             *i = (*i).bitand(u8x16::splat(35u8));
         }

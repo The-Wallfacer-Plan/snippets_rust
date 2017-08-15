@@ -37,3 +37,5 @@ fn unrolled_dot_product(x: &[f64], y: &[f64]) -> f64 {
         |sum, (&ex, &ey)| sum + (ex * ey),
     )
 }
+
+fn main() {}

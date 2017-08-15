@@ -1,4 +1,4 @@
-#![allow(non_snake_case,unused_variables,dead_code, unused_imports)]
+#![allow(non_snake_case,unused_variables, dead_code, unused_imports)]
 extern crate libc;
 extern crate errno;
 extern crate nix;
