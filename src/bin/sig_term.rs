@@ -39,11 +39,11 @@ use nix::sys::signal;
 use nix::sys::signal::*;
 use std::{thread, time};
 
-static mut _guard: bool = false;
+static mut _GUARD: bool = false;
 
 fn setup_handlers() {
     extern "C" fn test_sigaction_handler(_: libc::c_int) {
-        unsafe { _guard = true };
+        unsafe { _GUARD = true };
     };
 
     let handler_sig = SigHandler::Handler(test_sigaction_handler);
@@ -56,7 +56,7 @@ fn setup_handlers() {
 fn main() {
     setup_handlers();
     loop {
-        if unsafe { _guard } {
+        if unsafe { _GUARD } {
             println!("stopping...");
             break;
         }

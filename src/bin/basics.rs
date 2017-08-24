@@ -8,35 +8,6 @@ use std::thread;
 
 use mylib::test_lib;
 
-fn test_io() {
-    // open.rs
-    use std::error::Error;
-    use std::fs::File;
-    use std::io::prelude::*;
-    use std::path::Path;
-
-    // Create a path to the desired file
-    let path = Path::new("examples/no_kitty.png");
-    let display = path.display();
-
-    // Open the path in read-only mode, returns `io::Result<File>`
-    let mut file = match File::open(&path) {
-        // The `description` method of `io::Error` returns a string that
-        // describes the error
-        Err(why) => panic!("couldn't open {}: {}", display, why.description()),
-        Ok(file) => file,
-    };
-
-    // Read the file contents into a string, returns `io::Result<usize>`
-    let mut s = String::new();
-    match file.read_to_string(&mut s) {
-        Err(why) => panic!("couldn't read {}: {}", display, why.description()),
-        Ok(_) => print!("{} contains:\n{}", display, s),
-    }
-
-    // `file` goes out of scope, and the "hello.txt" file gets closed
-}
-
 fn test_thread() {
     static NTHREADS: i32 = 10;
 
@@ -267,94 +238,8 @@ fn test_collections() {
     println!("2 in array2: {}", array2.into_iter().any(|&x| x == 2));
 }
 
-fn test_constants() {
-    static LANGUAGE: &'static str = "rustc";
-    const THRESHOLD: i32 = 10;
-
-    fn is_big(n: i32) -> bool {
-        n > THRESHOLD
-    }
-
-    let n = 16;
-    let lang = LANGUAGE;
-    println!("language is {}, lang is also {}", LANGUAGE, lang);
-    println!(
-        "{} is {}, size={}",
-        n,
-        if is_big(n) { "big" } else { "small" },
-        std::mem::size_of_val(LANGUAGE)
-    );
-}
-
-fn test_simple() {
-    //    clang_struct::struct_clang();
-    //    llvm_jit::jit();
-    //    llvm_nop::nop();
-
-    println!("hello world");
-    let x = 5 + /* 90 + */ 5;
-    println!("x={}", x);
-    println!("{:b} {:o}", 2, 20);
-    println!("{obj}", obj = 20);
-
-    #[derive(Debug)]
-    struct Structure(i32);
-    impl fmt::Display for Structure {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            write!(f, "({})", self.0)
-        }
-    }
-
-    #[derive(Debug)]
-    struct Deep(Structure);
-    println!("hello {}", Structure(32));
-
-    // Define a structure where the fields are nameable for comparison.
-    #[derive(Debug)]
-    struct Point2D {
-        x: f64,
-        y: f64,
-    }
-    let point_2d = Point2D { x: 3.3, y: 4.4 };
-    println!("{:?}", point_2d);
-
-    #[allow(unused_variables)]
-    let a_float = 3.0;
-
-    let long_tuple = (
-        1u8,
-        2u16,
-        3u32,
-        4u64,
-        -1i8,
-        -2i16,
-        -3i32,
-        -4i64,
-        0.1f32,
-        0.2f64,
-        'a',
-        true,
-    );
-
-    let tuple_e = long_tuple.3;
-    println!("3rd of {:?} is {}", long_tuple, tuple_e);
-
-    fn analyze_slice(slice: &[i32]) {
-        println!("first element of the slice: {}", slice[0]);
-        println!("the slice has {} elements", slice.len());
-    }
-
-    let xs: [i32; 5] = [1, 2, 3, 4, 5];
-    analyze_slice(&xs);
-    analyze_slice(&xs[1..4]);
-
-    struct Nil;
-    #[allow(unused_variables)]
-    let _nil = Nil;
-}
-
-pub static mut foo: usize = 5;
-pub static mut bar: [u8; 10] = [0; 10];
+pub static mut FOO: usize = 5;
+pub static mut BAR: [u8; 10] = [0; 10];
 
 struct ST {
     i: i32,
@@ -362,7 +247,7 @@ struct ST {
 }
 
 fn main() {
-    test_io();
+    test_size_of();
 }
 
 fn test_size_of() {

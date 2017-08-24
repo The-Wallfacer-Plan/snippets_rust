@@ -32,12 +32,12 @@ fn no_binding(b: &mut Bencher) {
         b.iter(move || {
             let between = Range::new(-1f64, 1.);
             let mut rng = rand::StdRng::new().unwrap();
-            let total = 1_000_000_0u32;
+            let total = 1_000_000u32;
             let mut in_circle = 0u32;
             for _ in 0u32..total {
                 let a = between.ind_sample(&mut rng);
                 let b = between.ind_sample(&mut rng);
-                if a*a + b*b <= 1. {
+                if a * a + b * b <= 1. {
                     in_circle += 1;
                 }
             }
@@ -56,22 +56,19 @@ fn binding(b: &mut Bencher) {
         let mut bind_to = cpuset_for_core(&topo, 0 as usize);
         // Get only one logical processor (in case the core is SMT/hyper-threaded).
         bind_to.singlify();
-        topo
-            .set_cpubind_for_thread(tid, bind_to, CPUBIND_THREAD)
+        topo.set_cpubind_for_thread(tid, bind_to, CPUBIND_THREAD)
             .unwrap();
-        let binded_idx = topo
-            .get_cpubind_for_thread(tid, CPUBIND_THREAD)
-            .unwrap();
-    
+        let binded_idx = topo.get_cpubind_for_thread(tid, CPUBIND_THREAD).unwrap();
+
         b.iter(move || {
             let between = Range::new(-1f64, 1.);
             let mut rng = rand::StdRng::new().unwrap();
-            let total = 1_000_000_0u32;
+            let total = 1_000_000u32;
             let mut in_circle = 0u32;
             for _ in 0u32..total {
                 let a = between.ind_sample(&mut rng);
                 let b = between.ind_sample(&mut rng);
-                if a*a + b*b <= 1. {
+                if a * a + b * b <= 1. {
                     in_circle += 1;
                 }
             }
