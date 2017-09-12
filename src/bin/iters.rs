@@ -7,6 +7,8 @@ use std::u16;
 type T = u16;
 const SIZE: usize = u16::MAX as usize;
 
+fn main() {}
+
 pub fn create_with_collect() -> Vec<T> {
     (0..SIZE as T).collect::<Vec<T>>()
 }

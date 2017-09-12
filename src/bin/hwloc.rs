@@ -13,9 +13,7 @@ use test::Bencher;
 use hwloc::{CPUBIND_THREAD, CpuSet, ObjectType, Topology};
 use crossbeam::{Scope, scope};
 
-// fn main() {
-
-// }
+fn main() {}
 
 /// get cpu idx for cpu binding
 fn cpuset_for_core(topology: &Topology, idx: usize) -> CpuSet {
