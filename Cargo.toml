@@ -1,5 +1,5 @@
 [package]
-authors = ["Hongxu <hongxuchen1989@gmail.com>"]
+authors = ["weisuoxu <hongxuchen1989@gmail.com>"]
 name = "rs_snippets"
 version = "0.1.0"
 [dependencies]
