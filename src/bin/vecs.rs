@@ -4,9 +4,15 @@ struct Cell {
 
 fn construct_cells() -> Vec<Cell> {
     vec![
-        Cell { name: "a".to_string() },
-        Cell { name: "b".to_string() },
-        Cell { name: "c".to_string() },
+        Cell {
+            name: "a".to_string(),
+        },
+        Cell {
+            name: "b".to_string(),
+        },
+        Cell {
+            name: "c".to_string(),
+        },
     ]
 }
 

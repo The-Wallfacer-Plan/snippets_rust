@@ -35,7 +35,6 @@ pub fn create_unsafe() -> Vec<T> {
     arr
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

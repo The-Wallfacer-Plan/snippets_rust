@@ -1,6 +1,6 @@
-#![allow(non_snake_case,unused_variables, dead_code, unused_imports)]
-extern crate libc;
+#![allow(non_snake_case, unused_variables, dead_code, unused_imports)]
 extern crate errno;
+extern crate libc;
 extern crate nix;
 
 use std::process::Command;
@@ -45,7 +45,6 @@ fn remove_shm(shm_id: i32) {
     }
 }
 
-
 pub fn main() {
     unsafe {
         let shm_id = get_shm_id(0 as libc::key_t);
@@ -80,5 +79,4 @@ pub fn main() {
             }
         }
     }
-
 }

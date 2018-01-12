@@ -1,4 +1,4 @@
-#![allow(non_snake_case,unused_variables,dead_code, unused_imports)]
+#![allow(non_snake_case, unused_variables, dead_code, unused_imports)]
 use std::cell::Cell;
 use std::cell::RefCell;
 

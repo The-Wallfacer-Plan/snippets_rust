@@ -1,11 +1,11 @@
 extern crate hwloc;
-extern crate libc;
 #[cfg(target_os = "windows")]
 extern crate kernel32;
+extern crate libc;
 #[cfg(target_os = "windows")]
 extern crate winapi;
 
-use hwloc::{Topology, ObjectType, CPUBIND_THREAD, CpuSet};
+use hwloc::{CpuSet, ObjectType, Topology, CPUBIND_THREAD};
 use std::thread;
 use std::sync::{Arc, Mutex};
 

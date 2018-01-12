@@ -1,5 +1,5 @@
-extern crate threadpool;
 extern crate burst_pool;
+extern crate threadpool;
 
 use burst_pool::BurstPool;
 use threadpool::ThreadPool;
@@ -18,9 +18,8 @@ impl MutMgr {
 
         let (tx, rx): (mpsc::Sender<i32>, mpsc::Receiver<i32>) = channel();
 
-
         // receive
-        thread::spawn(move ||{
+        thread::spawn(move || {
             let mut count = 0;
             loop {
                 if let Ok(item) = receiver.try_recv() {
@@ -37,10 +36,8 @@ impl MutMgr {
             }
             if count >= 50 {
                 panic!("MutMgr ending!");
-            } 
+            }
         });
-
-        
 
         // send
         loop {
@@ -65,9 +62,8 @@ impl RunMgr {
 
         let (tx, rx): (mpsc::Sender<i32>, mpsc::Receiver<i32>) = channel();
 
-
         // receive
-        thread::spawn(move ||{
+        thread::spawn(move || {
             let mut count = 0;
             loop {
                 if let Ok(item) = receiver.try_recv() {
@@ -84,10 +80,8 @@ impl RunMgr {
             }
             if count >= 50 {
                 panic!("RunMgr ending!");
-            } 
+            }
         });
-
-        
 
         // send
         loop {
@@ -103,7 +97,6 @@ impl RunMgr {
     }
 }
 
-
 struct TraceMgr {}
 
 impl TraceMgr {
@@ -113,9 +106,8 @@ impl TraceMgr {
 
         let (tx, rx): (mpsc::Sender<i32>, mpsc::Receiver<i32>) = channel();
 
-
         // receive
-        thread::spawn(move ||{
+        thread::spawn(move || {
             let mut count = 0;
             loop {
                 if let Ok(item) = receiver.try_recv() {
@@ -132,10 +124,8 @@ impl TraceMgr {
             }
             if count >= 50 {
                 panic!("TraceMgr ending!");
-            } 
+            }
         });
-
-        
 
         // send
         loop {
@@ -170,10 +160,15 @@ fn main() {
         to_mutator_sender.send(item).unwrap();
     }
 
-    let mutr = thread::spawn(move || { MutMgr::run(to_runner_sender, mutator_receiver); });
-    let run = thread::spawn(move || { RunMgr::run(to_tracer_sender, runner_receiver); });
-    let tra = thread::spawn(move || { TraceMgr::run(to_mutator_sender, tracer_receiver); });
-
+    let mutr = thread::spawn(move || {
+        MutMgr::run(to_runner_sender, mutator_receiver);
+    });
+    let run = thread::spawn(move || {
+        RunMgr::run(to_tracer_sender, runner_receiver);
+    });
+    let tra = thread::spawn(move || {
+        TraceMgr::run(to_mutator_sender, tracer_receiver);
+    });
 
     mutr.join();
     run.join();

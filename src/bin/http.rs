@@ -16,9 +16,10 @@ fn run() {
         println!("Response: {}", res.status());
 
         res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map(|_| ()).map_err(
-                From::from,
-            )
+            io::stdout()
+                .write_all(&chunk)
+                .map(|_| ())
+                .map_err(From::from)
         })
     });
     core.run(work).unwrap();

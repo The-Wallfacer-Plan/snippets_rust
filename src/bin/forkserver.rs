@@ -1,20 +1,20 @@
-extern crate libc;
 extern crate errno;
-use libc::{c_int, pid_t, c_void, size_t, ssize_t, pipe, fork, dup2, close, execv, read};
-use std::env::{set_var};
+extern crate libc;
+use libc::{c_int, c_void, close, execv, fork, pid_t, pipe, read, size_t, ssize_t, dup2};
+use std::env::set_var;
 use std::ffi::CString;
 
 const FORKSRV_FD: c_int = 198;
-static PIPE_ENV_VAR: &'static str= "__AFL_PIPE_ID";
+static PIPE_ENV_VAR: &'static str = "__AFL_PIPE_ID";
 
 fn main() {
     unsafe {
-        let mut st_pipe : [c_int; 2] = [0; 2];
-        let mut ctl_pipe : [c_int; 2] = [0; 2];
-        let status : *mut c_int = &mut -32;
+        let mut st_pipe: [c_int; 2] = [0; 2];
+        let mut ctl_pipe: [c_int; 2] = [0; 2];
+        let status: *mut c_int = &mut -32;
         // let exec_path : [c_char; 15] = "examples/pngfix";
         println!("spinning up the fork server...");
-        if (! pipe(st_pipe.as_mut_ptr()) == 0 ) || (! pipe(ctl_pipe.as_mut_ptr()) == 0) {
+        if (!pipe(st_pipe.as_mut_ptr()) == 0) || (!pipe(ctl_pipe.as_mut_ptr()) == 0) {
             panic!("pipe failed!");
         }
         let forksrv_pid: pid_t = fork();
@@ -42,7 +42,10 @@ fn main() {
             close(st_pipe[0]);
             close(st_pipe[1]);
             let argv = vec![CString::new("examples/main").unwrap().as_ptr()];
-            execv(CString::new("examples/main").unwrap().as_ptr(), argv.as_ptr());
+            execv(
+                CString::new("examples/main").unwrap().as_ptr(),
+                argv.as_ptr(),
+            );
         }
 
         close(ctl_pipe[0]);
@@ -50,17 +53,17 @@ fn main() {
 
         let fsrv_st_fd = st_pipe[0];
 
-        let rlen : ssize_t = read(fsrv_st_fd, status as *mut c_void, 4 as size_t);
-        
+        let rlen: ssize_t = read(fsrv_st_fd, status as *mut c_void, 4 as size_t);
+
         if rlen == 4 {
             println!("forkserver set up correctly!");
-        }
-        else {
-            println!("forserver didn't setup correctly!
-                \nrlen is {}, status is {}, fsrv_st_fd is {}, writer end is {}", rlen, *status, fsrv_st_fd, st_pipe[1]);
+        } else {
+            println!(
+                "forserver didn't setup correctly!
+                \nrlen is {}, status is {}, fsrv_st_fd is {}, writer end is {}",
+                rlen, *status, fsrv_st_fd, st_pipe[1]
+            );
             panic!("ALERT: errno={}", errno::errno());
         }
-
     }
-    
 }

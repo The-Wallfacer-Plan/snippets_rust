@@ -16,9 +16,7 @@ fn run() -> Result<()> {
     use std::fs::File;
 
     // This operation will fail
-    File::open("tretrete").chain_err(
-        || "unable to open tretrete file",
-    )?;
+    File::open("tretrete").chain_err(|| "unable to open tretrete file")?;
 
     Ok(())
 }

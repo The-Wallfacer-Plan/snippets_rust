@@ -1,16 +1,21 @@
 extern crate libc;
 
 use std::fs::{self, File, OpenOptions};
-use std::io::{Write, Read, stdout, Seek, SeekFrom};
+use std::io::{stdout, Read, Seek, SeekFrom, Write};
 use std::thread;
 use std::time::Duration;
 use libc::*;
 use std::os::unix::io::AsRawFd;
 //use nix::unistd::ftruncate;
 
-
 fn main() {
-    let mut f = OpenOptions::new().create(true).write(true).truncate(true).read(true).open("/tmp/test_file").unwrap();
+    let mut f = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .read(true)
+        .open("/tmp/test_file")
+        .unwrap();
     {
         let v1 = b"good";
         f.write_all(v1).unwrap();

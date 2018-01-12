@@ -1,8 +1,8 @@
 #[macro_use]
 extern crate chan;
 extern crate chan_signal;
-extern crate nix;
 extern crate libc;
+extern crate nix;
 
 use chan_signal::Signal;
 
@@ -47,7 +47,7 @@ fn setup_handlers() {
     };
 
     let handler_sig = SigHandler::Handler(test_sigaction_handler);
-    let flags = SA_RESTART;
+    let flags = SaFlags::SA_RESTART;
     let mask = SigSet::empty();
     let sa = SigAction::new(handler_sig, flags, mask);
     unsafe { sigaction(SIGINT, &sa) }.unwrap();

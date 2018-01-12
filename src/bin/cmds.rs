@@ -3,7 +3,6 @@ use std::fs::File;
 use std::path::Path;
 
 fn main() {
-
     let fpath = Path::new("tests/input");
 
     let f: File = File::open(fpath).expect("cannot open file");
@@ -11,5 +10,4 @@ fn main() {
     let output = Command::new("bc").stdin(f).output().unwrap();
     let res = String::from_utf8(output.stdout).unwrap();
     println!("{}", res);
-
 }

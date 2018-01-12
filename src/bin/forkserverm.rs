@@ -1,12 +1,12 @@
-extern crate libc;
 extern crate errno;
-use libc::{c_int, pid_t, c_void, size_t, ssize_t, pipe, fork, dup2, close, execv, read};
-use std::env::{set_var};
+extern crate libc;
+use libc::{c_int, c_void, close, execv, fork, pid_t, pipe, read, size_t, ssize_t, dup2};
+use std::env::set_var;
 use std::ffi::CString;
 use std::thread;
 
 const FORKSRV_FD: c_int = 198;
-static PIPE_ENV_VAR: &'static str= "__AFL_PIPE_ID";
+static PIPE_ENV_VAR: &'static str = "__AFL_PIPE_ID";
 
 fn main() {
     let mut threads = vec![];
@@ -14,12 +14,12 @@ fn main() {
         // println!("Spawning thread {}", i);
         threads.push(thread::spawn(move || {
             unsafe {
-                let mut st_pipe : [c_int; 2] = [0; 2];
-                let mut ctl_pipe : [c_int; 2] = [0; 2];
-                let status : *mut c_int = &mut -32;
+                let mut st_pipe: [c_int; 2] = [0; 2];
+                let mut ctl_pipe: [c_int; 2] = [0; 2];
+                let status: *mut c_int = &mut -32;
                 // let exec_path : [c_char; 15] = "examples/pngfix";
                 println!("Thread{}: spinning up the fork server...", i);
-                if (! pipe(st_pipe.as_mut_ptr()) == 0 ) || (! pipe(ctl_pipe.as_mut_ptr()) == 0) {
+                if (!pipe(st_pipe.as_mut_ptr()) == 0) || (!pipe(ctl_pipe.as_mut_ptr()) == 0) {
                     panic!("Thread{}: pipe failed!", i);
                 }
                 let forksrv_pid: pid_t = fork();
@@ -48,7 +48,10 @@ fn main() {
                     close(st_pipe[1]);
                     let argv = vec![CString::new("examples/main").unwrap().as_ptr()];
                     println!("Thread{}: calling execv", i);
-                    execv(CString::new("examples/main").unwrap().as_ptr(), argv.as_ptr());
+                    execv(
+                        CString::new("examples/main").unwrap().as_ptr(),
+                        argv.as_ptr(),
+                    );
                 }
 
                 close(ctl_pipe[0]);
@@ -56,19 +59,20 @@ fn main() {
 
                 let fsrv_st_fd = st_pipe[0];
 
-                let rlen : ssize_t = read(fsrv_st_fd, status as *mut c_void, 4 as size_t);
-                
+                let rlen: ssize_t = read(fsrv_st_fd, status as *mut c_void, 4 as size_t);
+
                 if rlen == 4 {
                     println!("Thread{}: forkserver set up correctly!", i);
-                    // File::create(format!("target/debug/t{}_s", i)).expect("cannot create the file");
-                }
-                else {
-                    println!("Thread{}: forserver didn't setup correctly!
-                        \nrlen is {}, status is {}, fsrv_st_fd is {}, writer end is {}", i, rlen, *status, fsrv_st_fd, st_pipe[1]);
+                // File::create(format!("target/debug/t{}_s", i)).expect("cannot create the file");
+                } else {
+                    println!(
+                        "Thread{}: forserver didn't setup correctly!
+                        \nrlen is {}, status is {}, fsrv_st_fd is {}, writer end is {}",
+                        i, rlen, *status, fsrv_st_fd, st_pipe[1]
+                    );
                     // File::create(format!("target/debug/t{}_f", i)).expect("cannot create the file");
                     panic!("ALERT: errno={}", errno::errno());
                 }
-
             }
         }));
     }

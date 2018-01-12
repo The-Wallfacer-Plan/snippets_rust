@@ -1,7 +1,7 @@
 // #![feature(rand, plugin)]
-#![allow(non_snake_case,unused_variables,dead_code, unused_imports)]
-extern crate libc;
+#![allow(non_snake_case, unused_variables, dead_code, unused_imports)]
 extern crate errno;
+extern crate libc;
 extern crate rand;
 
 // use rand::{Rng, thread_rng};
@@ -71,12 +71,10 @@ impl Child {
             let ss: *const libc::c_char = str_to_cchar("bad").as_ptr();
             println!("--ss...");
         }
-
     }
 }
 
 fn main() {
-
     // let ref mut threadRng = thread_rng();
     let key = 0 as libc::key_t;
     // let key = threadRng.gen_range(0, u32::MAX/ 2) as i32;
@@ -111,6 +109,4 @@ fn main() {
     }
 
     remove_shm(shm_id);
-
-
 }

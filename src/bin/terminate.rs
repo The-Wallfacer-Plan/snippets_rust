@@ -35,8 +35,7 @@ fn terminate() {
         println!("Working...");
         thread::sleep(Duration::from_millis(500));
         match rx.try_recv() {
-            Ok(_) |
-            Err(TryRecvError::Disconnected) => {
+            Ok(_) | Err(TryRecvError::Disconnected) => {
                 println!("Terminating.");
                 break;
             }

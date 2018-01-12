@@ -1,7 +1,7 @@
 #![allow(unused_imports, unused_variables, dead_code)]
-extern crate notify;
 #[macro_use]
 extern crate log;
+extern crate notify;
 extern crate num_cpus;
 
 fn cpu_info() {

@@ -8,36 +8,40 @@
 #![feature(core_intrinsics, plugin, test, splice, const_fn)]
 #![feature(placement_in_syntax)]
 #![cfg_attr(feature = "clippy", plugin(clippy))]
-#![cfg_attr(feature = "clippy", allow(needless_return, needless_range_loop, needless_lifetimes, bool_comparison, too_many_arguments, match_same_arms))]
-#![cfg_attr(feature = "clippy", allow(let_and_return, collapsible_if, block_in_if_condition_stmt, let_unit_value, needless_pass_by_value, if_same_then_else))]
+#![cfg_attr(feature = "clippy",
+            allow(needless_return, needless_range_loop, needless_lifetimes, bool_comparison,
+                  too_many_arguments, match_same_arms))]
+#![cfg_attr(feature = "clippy",
+            allow(let_and_return, collapsible_if, block_in_if_condition_stmt, let_unit_value,
+                  needless_pass_by_value, if_same_then_else))]
 #![cfg_attr(feature = "clippy", allow(verbose_bit_mask))]
 //extern crate alloc_system;
 #[macro_use]
+extern crate bitflags;
+extern crate bytecount;
+extern crate chrono;
+extern crate fxhash;
+extern crate hwloc;
+#[macro_use]
+extern crate lazy_static;
+extern crate libc;
+extern crate log4rs;
+#[macro_use]
+extern crate log;
+#[macro_use]
+extern crate maplit;
+extern crate memmem;
+extern crate nix;
+#[macro_use]
 extern crate pretty_assertions;
+extern crate rand;
+extern crate redis;
 #[macro_use]
 extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
-#[macro_use]
-extern crate log;
 extern crate test;
-extern crate log4rs;
 extern crate toml;
-extern crate nix;
-extern crate libc;
-extern crate bytecount;
-extern crate rand;
-extern crate chrono;
-extern crate memmem;
-extern crate redis;
-#[macro_use]
-extern crate lazy_static;
-extern crate hwloc;
-#[macro_use]
-extern crate bitflags;
-#[macro_use]
-extern crate maplit;
-extern crate fxhash;
 extern crate twox_hash;
 
 const V: u8 = 2;

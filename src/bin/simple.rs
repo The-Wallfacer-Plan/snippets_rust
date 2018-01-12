@@ -1,5 +1,5 @@
 fn main() {
-    let arr = [1u8, 2, 3, 4];
+    let mut arr = [1u8, 2, 3, 4];
     {
         let pos: &u8 = unsafe { arr.get_unchecked(2) };
         let v = pos + 1u8;

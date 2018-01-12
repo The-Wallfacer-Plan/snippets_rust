@@ -1,17 +1,17 @@
 #![feature(test)]
 #![feature(cfg_target_feature)]
 
+extern crate crossbeam;
 extern crate hwloc;
 extern crate libc;
 extern crate rand;
 extern crate test;
-extern crate crossbeam;
 
 use rand::distributions::{IndependentSample, Range};
 use std::thread;
 use test::Bencher;
-use hwloc::{CPUBIND_THREAD, CpuSet, ObjectType, Topology};
-use crossbeam::{Scope, scope};
+use hwloc::{CpuSet, ObjectType, Topology, CPUBIND_THREAD};
+use crossbeam::{scope, Scope};
 
 fn main() {}
 
@@ -42,7 +42,6 @@ fn no_binding(b: &mut Bencher) {
         });
     });
 }
-
 
 #[bench]
 fn binding(b: &mut Bencher) {

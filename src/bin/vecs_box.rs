@@ -24,7 +24,11 @@ impl Game {
     fn construct_cells() -> Vec<Box<Cell>> {
         ["a", "b", "c"]
             .iter()
-            .map(|n| Box::new(Cell { name: n.to_string() }))
+            .map(|n| {
+                Box::new(Cell {
+                    name: n.to_string(),
+                })
+            })
             .collect()
     }
 

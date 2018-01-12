@@ -3,8 +3,8 @@ use std::thread::spawn;
 use std::thread::sleep;
 use std::time::Duration;
 
-extern crate threadpool;
 extern crate num_cpus;
+extern crate threadpool;
 
 fn passing_type(n_jobs: usize) {
     use std::sync::mpsc;
@@ -24,12 +24,13 @@ fn passing_type(n_jobs: usize) {
 
     for i in 0..n_jobs {
         let tx = tx.clone();
-        pool.execute(move || { tx.send(term(i)).unwrap(); });
+        pool.execute(move || {
+            tx.send(term(i)).unwrap();
+        });
     }
 
     let res: f64 = rx.iter().take(n_jobs).sum();
     println!("res={}", res);
-
 }
 
 fn shared() {
@@ -42,16 +43,17 @@ fn shared() {
     sleep(duration);
 
     child.join().unwrap();
-
 }
 
 fn channels() {
     use std::sync::mpsc;
     let (tx, rx) = mpsc::channel();
 
-    spawn(move || for i in 0..10 {
-        let thread_tx = tx.clone();
-        thread_tx.send((i + 2) * 4).unwrap();
+    spawn(move || {
+        for i in 0..10 {
+            let thread_tx = tx.clone();
+            thread_tx.send((i + 2) * 4).unwrap();
+        }
     });
 
     for _ in 0..10 {

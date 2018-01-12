@@ -4,9 +4,7 @@ extern crate test;
 
 extern crate bytecount;
 
-fn main() {
-
-}
+fn main() {}
 
 fn my_bytecount1(arr: &[u8]) -> usize {
     const V: u8 = 0;

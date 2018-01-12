@@ -6,17 +6,17 @@ use std::thread;
 use std::thread::sleep;
 use std::time::Duration;
 
-static QUERY_INACTIVE: &'static str= "entry_inactive";
-static QUERY_TRIM_DONE: &'static str= "entry_trim_done";
-static QUERY_WAS_FUZZED: &'static str= "entry_was_fuzzed";
-static QUERY_PASSED_DET: &'static str= "entry_passed_det";
-static QUERY_VAR_BEHAVIOR: &'static str= "entry_var_behavior";
-static QUERY_FAVORED: &'static str= "entry_favored";
+static QUERY_INACTIVE: &'static str = "entry_inactive";
+static QUERY_TRIM_DONE: &'static str = "entry_trim_done";
+static QUERY_WAS_FUZZED: &'static str = "entry_was_fuzzed";
+static QUERY_PASSED_DET: &'static str = "entry_passed_det";
+static QUERY_VAR_BEHAVIOR: &'static str = "entry_var_behavior";
+static QUERY_FAVORED: &'static str = "entry_favored";
 
 #[derive(Default)]
 pub struct QEntry {
     pub inactive: bool, // fake remove
-    pub len: u32, // byte size
+    pub len: u32,       // byte size
     ///
     pub cal_failed: u16, // calibration failed times
     pub trim_done: bool,
@@ -66,14 +66,43 @@ fn store_queue_item(conn: &Connection, entry: &QEntry) {
     let _: () = conn.set(query_touch_count, entry.touch_count).unwrap();
     let _: () = conn.set(query_mut_opt, entry.mut_opt).unwrap();
 
-    let _: () = redis::cmd("setbit").arg("QUERY_INACTIVE").arg(id).arg(entry.inactive as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("QUERY_TRIM_DONE").arg(id).arg(entry.trim_done as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("QUERY_WAS_FUZZED").arg(id).arg(entry.was_fuzzed as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("QUERY_PASSED_DET").arg(id).arg(entry.passed_det as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("QUERY_VAR_BEHAVIOR").arg(id).arg(entry.var_behavior as u8).query(conn).unwrap();
-    let _: () = redis::cmd("setbit").arg("QUERY_FAVORED").arg(id).arg(entry.favored as u8).query(conn).unwrap();
+    let _: () = redis::cmd("setbit")
+        .arg("QUERY_INACTIVE")
+        .arg(id)
+        .arg(entry.inactive as u8)
+        .query(conn)
+        .unwrap();
+    let _: () = redis::cmd("setbit")
+        .arg("QUERY_TRIM_DONE")
+        .arg(id)
+        .arg(entry.trim_done as u8)
+        .query(conn)
+        .unwrap();
+    let _: () = redis::cmd("setbit")
+        .arg("QUERY_WAS_FUZZED")
+        .arg(id)
+        .arg(entry.was_fuzzed as u8)
+        .query(conn)
+        .unwrap();
+    let _: () = redis::cmd("setbit")
+        .arg("QUERY_PASSED_DET")
+        .arg(id)
+        .arg(entry.passed_det as u8)
+        .query(conn)
+        .unwrap();
+    let _: () = redis::cmd("setbit")
+        .arg("QUERY_VAR_BEHAVIOR")
+        .arg(id)
+        .arg(entry.var_behavior as u8)
+        .query(conn)
+        .unwrap();
+    let _: () = redis::cmd("setbit")
+        .arg("QUERY_FAVORED")
+        .arg(id)
+        .arg(entry.favored as u8)
+        .query(conn)
+        .unwrap();
     let _: () = conn.sadd(query_children, id).unwrap();
-
 }
 
 fn load_queue_item(conn: &Connection, id: usize) -> Option<QEntry> {
@@ -95,7 +124,7 @@ fn load_queue_item(conn: &Connection, id: usize) -> Option<QEntry> {
     }
     let cal_failed = conn.get(query_cal_failed).unwrap_or(0);
     let bitmap_size = conn.get(query_bitmap_size).unwrap_or(0);
-    if bitmap_size == 0{
+    if bitmap_size == 0 {
         return None;
     }
     let path_stat = conn.get(query_path_stat).unwrap_or(0);
@@ -137,18 +166,14 @@ fn load_queue_item(conn: &Connection, id: usize) -> Option<QEntry> {
         touch_count: touch_count,
         mut_opt: mut_opt,
     })
-
 }
 
-
-
 fn main() {
-
     let g_start = PreciseTime::now();
     let mut threads = vec![];
     for i in 0..4 {
         let sleep_time: u32 = (10000000 * i) as u32; // ns -> 0.01s
-        // let sleep_time: u32 = 10000000;
+                                                     // let sleep_time: u32 = 10000000;
         threads.push(thread::spawn(move || {
             let client = Client::open("redis://127.0.0.1/").unwrap();
             let conn = client.get_connection().unwrap();
@@ -219,7 +244,7 @@ fn main() {
     //     touch_count: 1,
     //     mut_opt: 2,
     // };
-    
+
     // let store_start = PreciseTime::now();
     // store_queue_item(&conn, &entry1);
     // let store_end = PreciseTime::now();
@@ -238,7 +263,7 @@ fn main() {
     //         println!("\tDidn't get entry2");
     //     }
     // }
-    
+
     let g_end = PreciseTime::now();
     println!("{} seconds for the whole run", g_start.to(g_end));
 }

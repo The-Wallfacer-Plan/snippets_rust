@@ -1,14 +1,13 @@
 #![allow(dead_code, unused_variables, unused_imports)]
+extern crate libc;
+extern crate nix;
 extern crate tempdir;
 extern crate tempfile;
-extern crate nix;
-extern crate libc;
 
-use nix::fcntl::{OFlag, O_RDONLY, open, openat, readlink, readlinkat};
+use nix::fcntl::{open, openat, readlink, readlinkat, OFlag};
 use nix::sys::stat::Mode;
 use nix::unistd::{close, read};
 use nix::errno::errno;
-use nix::Errno;
 use tempdir::TempDir;
 use tempfile::NamedTempFile;
 use std::io::prelude::*;
@@ -150,6 +149,5 @@ fn run() {
         }
 
         println!("status: {}", status);
-
     }
 }

@@ -8,7 +8,6 @@ impl std::ops::Deref for X {
     }
 }
 
-
 trait M {
     fn m(self);
 }
@@ -133,8 +132,8 @@ fn main() {
     Z { val: Y { val: 42 } }.refm(); // i32::refm() , self == **@
 
     A.m(); // A::m()      , self == @
-    // without the Copy trait, (&A).m() would be a compilation error:
-    // cannot move out of borrowed content
+           // without the Copy trait, (&A).m() would be a compilation error:
+           // cannot move out of borrowed content
     (&A).m(); // A::m()      , self == *@
     (&&A).m(); // &&&A::m()   , self == &@
     (&&&A).m(); // &&&A::m()   , self == @

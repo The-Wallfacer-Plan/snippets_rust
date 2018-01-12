@@ -16,9 +16,9 @@ fn test_thread() {
 
     for i in 0..NTHREADS {
         // Spin up another thread
-        children.push(thread::spawn(
-            move || println!("this is thread number {}", i),
-        ));
+        children.push(thread::spawn(move || {
+            println!("this is thread number {}", i)
+        }));
     }
 
     for child in children {
@@ -70,11 +70,9 @@ fn test_map() {
     // A function to peel, chop, and cook food all in sequence.
     // We chain multiple uses of `map()` to simplify the code.
     fn process(food: Option<Food>) -> Option<Cooked> {
-        food.map(Peeled).map(|Peeled(f)| Chopped(f)).map(
-            |Chopped(f)| {
-                Cooked(f)
-            },
-        )
+        food.map(Peeled)
+            .map(|Peeled(f)| Chopped(f))
+            .map(|Chopped(f)| Cooked(f))
     }
 
     // Check whether there's food or not before trying to eat it!
