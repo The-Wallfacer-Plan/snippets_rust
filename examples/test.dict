@@ -1,0 +1,30 @@
+lolol@1 = "a"
+test@2 = "b"
+sdaf@3 = "c"
+sflasf = "d"
+# ignore this
+saldjf = "e"
+sdkjgg = "f"
+sjdflas@1 = "g"
+jffsa@2 = "h"
+sljglk@1 = "i"
+
+# this is a comment
+
+jdssdfj = "j"
+
+haha = "haha"
+
+lol = "lol"
+
+right = " right"
+
+left = " left"
+
+hex = "\x08\x98\x89"
+
+header_png="\x89PNG\x0d\x0a\x1a\x0a"
+
+# causing panic
+# lojlfsag
+lol = lol
