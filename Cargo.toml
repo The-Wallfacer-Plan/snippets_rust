@@ -52,6 +52,7 @@ tokio-core = "0.1.8"
 toml = "0.4"
 twox-hash = "1.1.0"
 url = "1.6.0"
+rsgenetic = "1.7.11"
 
 [dependencies.nix]
 git = "https://github.com/nix-rust/nix"
@@ -67,12 +68,6 @@ version = "^3.2"
 avx-accel = ["bytecount/avx-accel"]
 simd-accel = ["bytecount/simd-accel"]
 
-[lib]
-doc = false
-doctest = false
-name = "mylib"
-path = "src/lib/mods.rs"
-test = false
 [profile.bench]
 codegen-units = 1
 debug = false

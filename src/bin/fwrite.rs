@@ -6,7 +6,6 @@ use std::thread;
 use std::time::Duration;
 use libc::*;
 use std::os::unix::io::AsRawFd;
-//use nix::unistd::ftruncate;
 
 fn main() {
     let mut f = OpenOptions::new()
