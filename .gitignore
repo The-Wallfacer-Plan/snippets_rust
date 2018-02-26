@@ -1,7 +1,8 @@
-/target/
+c/target/
 **/*.rs.bk
 
 /.idea/
 /*.iml
 log/
 *.out
+/target/

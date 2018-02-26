@@ -53,6 +53,7 @@ toml = "0.4"
 twox-hash = "1.1.0"
 url = "1.6.0"
 rsgenetic = "1.7.11"
+petgraph = "0.4.11"
 
 [dependencies.nix]
 git = "https://github.com/nix-rust/nix"
