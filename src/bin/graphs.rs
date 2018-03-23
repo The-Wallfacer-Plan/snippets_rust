@@ -2,9 +2,10 @@ extern crate petgraph;
 
 use petgraph::{Undirected, Directed, Graph};
 use petgraph::dot::{Dot, Config};
+use petgraph::algo;
 use std::collections::{HashSet, HashMap};
 
-#[derive(Eq, PartialEq, Clone, Debug, Hash, Default)]
+#[derive(Eq, PartialEq, Clone, Debug, Hash, Default, PartialOrd)]
 pub struct FotGNode {
     id: String,
     label: Option<String>,
@@ -15,9 +16,7 @@ impl FotGNode {
     pub fn new(id: &str, label: Option<&str>) -> FotGNode {
         FotGNode { id: id.to_string(), label: label.map(|s| s.to_string()), shape: None }
     }
-}
 
-impl FotGNode {
     pub fn matched(&self, other: &FotGNode) -> bool {
         self.id == other.id
     }
@@ -35,9 +34,9 @@ pub struct RawGraph {
     edges: Vec<FotEdge>,
 }
 
-fn main() {
+fn foo() {
     let mut og: Graph<FotGNode, FotGNode> = Graph::new();
-    let raw_edges:Vec<(String, String)> = [("fn0", "fn1"), ("fn2", "fn3"), ("fn0", "fn2")].iter().map(|&(s1, s2)|(s1.to_string(), s2.to_string())).collect();
+    let raw_edges: Vec<(String, String)> = [("fn0", "fn1"), ("fn2", "fn3"), ("fn0", "fn2")].iter().map(|&(s1, s2)| (s1.to_string(), s2.to_string())).collect();
     let mut node_map = HashMap::new();
     for i in 0..4 {
         let id = format!("fn{}", i);
@@ -54,4 +53,20 @@ fn main() {
     og.extend_with_edges(&edges);
     let dot = Dot::with_config(&og, &[Config::EdgeNoLabel]);
     println!("{:?}", dot);
+    let node_indices: Vec<_> = node_map.values().collect();
+    println!("indices: {:?}", node_indices);
+    for idx in node_indices {
+        println!("{:?}", og[*idx]);
+    }
+
+//    for &i in node_indices.iter() {
+//        let scores: Vec<_> = algo::dijkstra(&og, *i, None, |e| *e.weight()).into_iter().collect();
+//        println!("i: {:?}, scores: {:?}", i, scores);
+//    }
 }
+
+
+fn main() {
+    foo();
+}
+

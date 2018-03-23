@@ -6,3 +6,4 @@ c/target/
 log/
 *.out
 /target/
+Cargo.lock
