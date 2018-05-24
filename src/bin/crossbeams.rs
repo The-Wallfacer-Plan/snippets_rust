@@ -1,5 +1,4 @@
 #![feature(test)]
-#![feature(cfg_target_feature)]
 
 extern crate crossbeam;
 extern crate simd;

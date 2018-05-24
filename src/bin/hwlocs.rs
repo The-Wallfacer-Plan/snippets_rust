@@ -1,5 +1,4 @@
 #![feature(test)]
-#![feature(cfg_target_feature)]
 
 extern crate crossbeam;
 extern crate hwloc;
@@ -13,7 +12,43 @@ use test::Bencher;
 use hwloc::{CpuSet, ObjectType, Topology, CPUBIND_THREAD};
 use crossbeam::{scope, Scope};
 
-fn main() {}
+/// Example on how to check for specific topology support of a feature.
+fn check_support() {
+    let topo = Topology::new();
+
+    // Check if Process Binding for CPUs is supported
+    println!(
+        "CPU Binding (current process) supported: {}",
+        topo.support().cpu().set_current_process()
+    );
+    println!(
+        "CPU Binding (any process) supported: {}",
+        topo.support().cpu().set_process()
+    );
+
+    // Check if Thread Binding for CPUs is supported
+    println!(
+        "CPU Binding (current thread) supported: {}",
+        topo.support().cpu().set_current_thread()
+    );
+    println!(
+        "CPU Binding (any thread) supported: {}",
+        topo.support().cpu().set_thread()
+    );
+
+    // Check if Memory Binding is supported
+    println!(
+        "Memory Binding supported: {}",
+        topo.support().memory().set_current_process()
+    );
+
+    // Debug Print all the Support Flags
+    println!("All Flags:\n{:?}", topo.support());
+}
+
+fn main() {
+    check_support();
+}
 
 /// get cpu idx for cpu binding
 fn cpuset_for_core(topology: &Topology, idx: usize) -> CpuSet {

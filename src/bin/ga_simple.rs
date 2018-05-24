@@ -1,4 +1,3 @@
-#![feature(use_nested_groups)]
 #![feature(box_syntax)]
 extern crate rsgenetic;
 

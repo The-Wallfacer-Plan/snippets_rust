@@ -1,4 +1,3 @@
-#![feature(use_nested_groups)]
 #![feature(box_syntax)]
 #![feature(swap_nonoverlapping)]
 extern crate rsgenetic;
@@ -44,7 +43,7 @@ impl Phenotype<i32> for Bytes {
     }
 
     fn mutate(&self) -> Self {
-        let mut rnd = rand::weak_rng();
+        let mut rnd = rand::thread_rng();
         let idx = rnd.gen_range(0, LEN);
         let v = rnd.gen_range(0x32, 0x7F);
         let mut mutated = self.clone();
