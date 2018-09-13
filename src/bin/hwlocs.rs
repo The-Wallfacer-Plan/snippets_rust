@@ -10,7 +10,7 @@ use rand::distributions::{IndependentSample, Range};
 use std::thread;
 use test::Bencher;
 use hwloc::{CpuSet, ObjectType, Topology, CPUBIND_THREAD};
-use crossbeam::{scope, Scope};
+use crossbeam::scope;
 
 /// Example on how to check for specific topology support of a feature.
 fn check_support() {

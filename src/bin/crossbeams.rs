@@ -5,14 +5,12 @@ extern crate simd;
 extern crate test;
 
 use simd::u8x16;
-use crossbeam::{scope, Scope};
-use crossbeam::sync::SegQueue;
+use crossbeam::scope;
 use std::u8;
 use std::ops::{BitAnd, BitOr};
 use test::Bencher;
 
 fn main() {
-    // let queue = SegQueue::new();
     const MAP_SIZE: usize = 8;
     let mut virgin_bits = Box::new([u8x16::splat(u8::MAX); MAP_SIZE]);
     // let trace_bits = Box::new([u8x16::splat(0u8); MAP_SIZE]);
@@ -41,7 +39,6 @@ fn naive(b: &mut Bencher) {
     b.iter(move || {
         const MAP_SIZE: usize = 50;
         let mut virgin_bits = Box::new([[u8::MAX; 16]; MAP_SIZE]);
-        // let queue = SegQueue::new();
         // let trace_bits = Box::new([u8x16::splat(0u8); MAP_SIZE]);
 
         scope(|scope| {
@@ -65,7 +62,6 @@ fn simd_u8x16(b: &mut Bencher) {
     b.iter(move || {
         const MAP_SIZE: usize = 50;
         let mut virgin_bits = Box::new([u8x16::splat(u8::MAX); MAP_SIZE]);
-        // let queue = SegQueue::new();
         // let trace_bits = Box::new([u8x16::splat(0u8); MAP_SIZE]);
 
         scope(|scope| {

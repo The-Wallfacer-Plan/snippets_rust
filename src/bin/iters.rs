@@ -1,13 +1,17 @@
 #![allow(unused_variables, dead_code, unused_imports)]
 #![feature(test)]
 extern crate test;
+
 use std::ptr;
 use std::u16;
 
 type T = u16;
+
 const SIZE: usize = u16::MAX as usize;
 
-fn main() {}
+fn main() {
+    //
+}
 
 pub fn create_with_collect() -> Vec<T> {
     (0..SIZE as T).collect::<Vec<T>>()
@@ -53,5 +57,4 @@ mod tests {
     fn bench_unsafe(b: &mut test::Bencher) {
         b.iter(|| create_unsafe());
     }
-
 }

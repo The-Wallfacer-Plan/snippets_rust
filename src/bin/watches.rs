@@ -1,15 +1,7 @@
 #![allow(unused_imports, unused_variables, dead_code)]
-#[macro_use]
-extern crate log;
 extern crate notify;
-extern crate num_cpus;
 
-fn cpu_info() {
-    let cpus = num_cpus::get();
-    println!("cpus={}", cpus);
-}
-
-fn notify() {
+fn t_watch() {
     use notify::{RecommendedWatcher, RecursiveMode, Watcher};
     use std::sync::mpsc::channel;
     use std::time::Duration;
@@ -44,5 +36,5 @@ fn notify() {
 }
 
 fn main() {
-    cpu_info();
+    t_watch();
 }

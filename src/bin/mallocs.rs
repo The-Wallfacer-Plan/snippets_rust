@@ -1,6 +1,7 @@
 extern crate libc;
 
 use libc::*;
+use std::slice;
 
 // Assume we have a C function that returns a malloc'ed ptr.
 unsafe extern "C" fn create_str() -> *mut c_char {
@@ -13,7 +14,6 @@ unsafe extern "C" fn del_str(ptr: *mut c_char) {
     free(ptr as *mut c_void);
 }
 
-use std::slice;
 fn main() {
     // we wrap the null-terminated ptr into an Mptr.
     let ptr = unsafe { create_str() };

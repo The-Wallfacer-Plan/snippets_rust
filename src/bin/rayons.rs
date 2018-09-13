@@ -4,6 +4,10 @@ extern crate rayon;
 use rayon::prelude::*;
 
 fn main() {
+
+}
+
+fn calc_pi() {
     #[inline]
     fn term(k: usize) -> f64 {
         let c: i8 = if k & 1 == 0 { 1 } else { -1 };
@@ -23,8 +27,8 @@ fn main() {
         println!("res={}", v);
     }
 
-    // let v = pi(std::u32::MAX as usize);
-    // println!("res={}", v);
+    let v = pi(std::u32::MAX as usize);
+    println!("res={}", v);
 }
 
 fn qsort() {
