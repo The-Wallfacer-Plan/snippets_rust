@@ -103,6 +103,15 @@ fn t_to_string() {
     foo_bbb(sssbbb);
 }
 
+fn t_envs() {
+    if let Ok(s) = std::env::var("CC") {
+        println!("CC={}", s);
+    } else {
+        println!("CC not set");
+    }
+}
+
 fn main() {
-    t_atomics();
+//    t_atomics();
+    t_envs();
 }

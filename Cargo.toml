@@ -4,6 +4,7 @@ name = "rs_snippets"
 version = "0.1.0"
 
 [dependencies]
+specs = "0.12.1"
 llvm-sys = "60.2.0"
 bitflags = "1.0.3"
 burst-pool = "0.5.1"
@@ -53,6 +54,9 @@ url = "1.7.0"
 rsgenetic = "1.7.14"
 petgraph = "0.4.12"
 time = "0.1.40"
+slotmap = "0.3"
+tui = "0.3.0"
+termion = "1.5.1"
 
 [dependencies.clang]
 version = "0.20.0"
