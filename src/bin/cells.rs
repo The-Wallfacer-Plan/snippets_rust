@@ -26,3 +26,4 @@ fn simples() {
 fn main() {
     cells();
 }
+

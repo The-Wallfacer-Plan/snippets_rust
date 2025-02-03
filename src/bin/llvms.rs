@@ -26,9 +26,11 @@ pub fn nop() {
 
         // Create a basic block in the function and set our builder to generate
         // code in it.
-        let bb = llvm::core::LLVMAppendBasicBlockInContext(context,
-                                                           function,
-                                                           b"entry\0".as_ptr() as *const _);
+        let bb = llvm::core::LLVMAppendBasicBlockInContext(
+            context,
+            function,
+            b"entry\0".as_ptr() as *const _,
+        );
         llvm::core::LLVMPositionBuilderAtEnd(builder, bb);
 
         // Emit a `ret void` into the function
@@ -83,7 +85,7 @@ pub fn jit() {
         LLVMDumpModule(module);
 
         // build an execution engine
-        let mut ee = mem::uninitialized();
+        let mut ee = mem::zeroed();
         let mut out = mem::zeroed();
 
         // robust code should check that these calls complete successfully
@@ -116,3 +118,4 @@ pub fn jit() {
 fn main() {
     jit();
 }
+

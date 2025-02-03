@@ -1,4 +1,8 @@
 #![allow(unused_imports, unused_variables, dead_code)]
+
+use std::path::{Path, PathBuf};
+
+use notify::Config;
 extern crate notify;
 
 fn t_watch() {
@@ -12,13 +16,14 @@ fn t_watch() {
 
         // Automatically select the best implementation for your platform.
         // You can also access each implementation directly e.g. INotifyWatcher.
-        let mut watcher: RecommendedWatcher = try!(Watcher::new(tx, Duration::from_secs(2)));
+        let config = Config::default().with_poll_interval(Duration::from_secs(2));
+        let mut watcher: RecommendedWatcher = Watcher::new(tx, config)?;
 
         // Add a path to be watched. All files and directories at that path and
         // below will be monitored for changes.
         use std::env;
-        let home_dir: String = env::var("HOME").unwrap();
-        try!(watcher.watch(home_dir, RecursiveMode::Recursive));
+        let home_dir: PathBuf = env::var_os("HOME").unwrap().into();
+        watcher.watch(home_dir.as_path(), RecursiveMode::Recursive)?;
 
         // This is a simple loop, but you may want to use more complex logic here,
         // for example to handle I/O.

@@ -1,17 +1,16 @@
-#![feature(box_syntax)]
-
+#![allow(dead_code, unused_imports)]
 extern crate libc;
 
 use std::sync::atomic::AtomicBool;
-use std::sync::Arc;
 use std::sync::atomic::Ordering;
+use std::sync::Arc;
 use std::{thread, time};
 
+use libc::*;
 use std::fs::{self, File, OpenOptions};
 use std::io::{Read, Seek, SeekFrom, Write};
-use std::time::Duration;
-use libc::*;
 use std::os::unix::io::AsRawFd;
+use std::time::Duration;
 
 fn t_ptrs() {
     fn innocent_looking_fn(b: &Box<usize>) {
@@ -23,7 +22,7 @@ fn t_ptrs() {
         }
     }
 
-    let mut b = box 22;
+    let mut b = Box::new(22);
     innocent_looking_fn(&b);
     *b += 1;
     println!("{}", *b);
@@ -61,7 +60,6 @@ fn t_fwrite() {
         f.flush().unwrap();
     }
 }
-
 
 fn t_atomics() {
     let mut ab = Arc::new(AtomicBool::new(false));
@@ -112,6 +110,7 @@ fn t_envs() {
 }
 
 fn main() {
-//    t_atomics();
+    //    t_atomics();
     t_envs();
 }
+

@@ -1,4 +1,4 @@
-#![feature(used)]
+#![allow(dead_code)]
 
 #[used]
 static FOO: i32 = 1;

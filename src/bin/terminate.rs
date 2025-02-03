@@ -1,7 +1,9 @@
+#![allow(dead_code)]
+
+use std::io::{self, BufRead};
+use std::sync::mpsc::{self, TryRecvError};
 use std::thread;
 use std::time::Duration;
-use std::sync::mpsc::{self, TryRecvError};
-use std::io::{self, BufRead};
 
 fn main() {
     println!("Press enter to wake up the child thread");

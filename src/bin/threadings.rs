@@ -1,6 +1,6 @@
 #![allow(unused_variables, dead_code, unused_imports)]
-use std::thread::spawn;
 use std::thread::sleep;
+use std::thread::spawn;
 use std::time::Duration;
 
 extern crate num_cpus;

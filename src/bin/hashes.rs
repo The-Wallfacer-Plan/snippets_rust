@@ -5,11 +5,11 @@ extern crate test;
 extern crate fxhash;
 extern crate twox_hash;
 
+use fxhash::FxHasher;
 use std::collections::hash_map::DefaultHasher;
 use std::hash::Hasher;
-use twox_hash::XxHash;
 use twox_hash::XxHash32;
-use fxhash::FxHasher;
+use twox_hash::XxHash64;
 
 fn hasher_bench<H>(b: &mut test::Bencher, mut hasher: H, len: usize)
 where
@@ -27,7 +27,7 @@ fn main() {}
 
 #[inline]
 fn xxhash_bench(b: &mut test::Bencher, len: usize) {
-    hasher_bench(b, XxHash::with_seed(0), len)
+    hasher_bench(b, XxHash64::with_seed(0), len)
 }
 
 #[inline]

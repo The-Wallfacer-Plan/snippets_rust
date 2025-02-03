@@ -38,12 +38,14 @@ fn write(output: &[u8]) {
 }
 
 fn main() {
-    write(&env::args_os()
-        .nth(1)
-        .map(to_bytes)
-        .map_or(Cow::Borrowed(&b"y\n"[..]), |mut arg| {
-            arg.push(b'\n');
-            Cow::Owned(arg)
-        }));
+    write(
+        &env::args_os()
+            .nth(1)
+            .map(to_bytes)
+            .map_or(Cow::Borrowed(&b"y\n"[..]), |mut arg| {
+                arg.push(b'\n');
+                Cow::Owned(arg)
+            }),
+    );
     process::exit(1);
 }

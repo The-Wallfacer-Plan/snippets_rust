@@ -31,7 +31,7 @@ pub fn create_unsafe() -> Vec<T> {
         arr.set_len(SIZE);
     }
 
-    for (n, mut b) in arr.iter_mut().enumerate() {
+    for (n, b) in arr.iter_mut().enumerate() {
         unsafe {
             ptr::write(b, n as T);
         }

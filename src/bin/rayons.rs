@@ -3,9 +3,7 @@ extern crate rayon;
 
 use rayon::prelude::*;
 
-fn main() {
-
-}
+fn main() {}
 
 fn calc_pi() {
     #[inline]
