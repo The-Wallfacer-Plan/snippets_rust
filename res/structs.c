@@ -1,24 +1,17 @@
-#ifndef _STRUCTS_H_
-#define _STRUCTS_H_
-
-#include <stdlib.h>
-
-struct A {
-  int a;
-  float b;
-  int ca[10];
-  struct A *p;
+struct StructA {
+  int i_field;
+  float f_field;
+  int array_field[10];
+  struct StructA *p_field;
 };
 
 typedef struct {
-  int index;
-  struct A aa[3];
-} B;
+  int field_b;
+  struct StructA array_a[3];
+} StructBTy;
 
-B func1(void);
+struct StructC {};
 
-float func2(int i) {
-  return float(i);
-}
+StructBTy func1(void);
 
-#endif
+float func2(int i) { return (float)i; }

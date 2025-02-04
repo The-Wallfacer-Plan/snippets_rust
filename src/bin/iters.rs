@@ -5,7 +5,7 @@ extern crate test;
 use std::ptr;
 use std::u16;
 
-type T = u16;
+type IntTy = u16;
 
 const SIZE: usize = u16::MAX as usize;
 
@@ -13,19 +13,19 @@ fn main() {
     //
 }
 
-pub fn create_with_collect() -> Vec<T> {
-    (0..SIZE as T).collect::<Vec<T>>()
+pub fn create_with_collect() -> Vec<IntTy> {
+    (0..SIZE as IntTy).collect::<Vec<IntTy>>()
 }
 
-pub fn create_manually() -> Vec<T> {
+pub fn create_manually() -> Vec<IntTy> {
     let mut arr = vec![0; SIZE];
     for (n, b) in arr.iter_mut().enumerate() {
-        *b = n as T;
+        *b = n as IntTy;
     }
     arr
 }
 
-pub fn create_unsafe() -> Vec<T> {
+pub fn create_unsafe() -> Vec<IntTy> {
     let mut arr = Vec::with_capacity(SIZE);
     unsafe {
         arr.set_len(SIZE);
@@ -33,7 +33,7 @@ pub fn create_unsafe() -> Vec<T> {
 
     for (n, b) in arr.iter_mut().enumerate() {
         unsafe {
-            ptr::write(b, n as T);
+            ptr::write(b, n as IntTy);
         }
     }
     arr

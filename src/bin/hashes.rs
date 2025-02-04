@@ -26,7 +26,7 @@ where
 fn main() {}
 
 #[inline]
-fn xxhash_bench(b: &mut test::Bencher, len: usize) {
+fn xxhash64_bench(b: &mut test::Bencher, len: usize) {
     hasher_bench(b, XxHash64::with_seed(0), len)
 }
 
@@ -43,8 +43,8 @@ fn fxhash_bench(b: &mut test::Bencher, len: usize) {
 const LEN: usize = 1 << 16;
 
 #[bench]
-fn bench_xxhash(b: &mut test::Bencher) {
-    xxhash_bench(b, LEN);
+fn bench_xxhash64(b: &mut test::Bencher) {
+    xxhash64_bench(b, LEN);
 }
 
 #[bench]

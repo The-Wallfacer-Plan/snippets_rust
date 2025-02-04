@@ -9,12 +9,10 @@ pub fn gen_clang() -> Clang {
     return clang;
 }
 
-pub fn check_structs<S: AsRef<str>>(clang: &Clang, f: impl Into<PathBuf>, args: &[S]) {
-    // Create a new `Index`
+pub fn check_structs<S: AsRef<str>>(clang: &Clang, fpath: impl Into<PathBuf>, args: &[S]) {
     let index = Index::new(&clang, false, false);
 
-    // Parse a source file into a translation unit
-    let tu = index.parser(f).arguments(args).parse().unwrap();
+    let tu = index.parser(fpath).arguments(args).parse().unwrap();
     println!("{:?}", tu.get_memory_usage());
 
     // Get the structs in this translation unit
@@ -67,5 +65,6 @@ pub fn func_name_info<S: AsRef<str>>(clang: &Clang, f: impl Into<PathBuf>, args:
 
 fn main() {
     let clang = gen_clang();
-    func_name_info(&clang, "res/structs.c", &["-c"]);
+    func_name_info(&clang, "res/structs.c", &["--std=c99"]);
+    check_structs(&clang, "res/structs.c", &["-x", "c++", "--std=c++11"]);
 }

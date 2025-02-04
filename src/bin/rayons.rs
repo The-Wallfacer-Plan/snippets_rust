@@ -1,46 +1,56 @@
-#![allow(dead_code, unused_variables)]
-extern crate rayon;
+#![feature(test)]
 
-use rayon::prelude::*;
+#[cfg(test)]
+mod tests {
+    use rayon::iter::IntoParallelIterator;
+    use rayon::iter::ParallelIterator;
 
-fn main() {}
-
-fn calc_pi() {
     #[inline]
-    fn term(k: usize) -> f64 {
+    fn pi_calc_iter(k: usize) -> f64 {
         let c: i8 = if k & 1 == 0 { 1 } else { -1 };
         ((4 * c) as f64) / ((2 * k + 1) as f64)
     }
 
-    use rayon::iter::ParallelIterator;
-    fn pi(n: usize) -> f64 {
-        (0..n).into_par_iter().map(term).sum()
+    extern crate test;
+    // make this value bigger to view bigger performance differences
+    const NUM: usize = (std::u16::MAX as usize) * 1024;
+    #[bench]
+    fn bench_pi_seq(b: &mut test::Bencher) {
+        b.iter(|| {
+            let n = test::black_box(NUM);
+            (0..n).into_iter().map(pi_calc_iter).sum::<f64>()
+        })
     }
 
-    {
-        fn spi(n: usize) -> f64 {
-            (0..n).into_iter().map(term).sum()
-        }
-        let v = spi(std::u32::MAX as usize);
-        println!("res={}", v);
+    #[bench]
+    fn bench_pi_par(b: &mut test::Bencher) {
+        b.iter(|| {
+            let n = test::black_box(NUM);
+            (0..n).into_par_iter().map(pi_calc_iter).sum::<f64>()
+        })
     }
-
-    let v = pi(std::u32::MAX as usize);
-    println!("res={}", v);
 }
 
-fn qsort() {
-    let mut input = (0..1000).collect::<Vec<_>>();
+fn par_calculate() {
+    use rayon::iter::IntoParallelIterator;
+    use rayon::iter::IntoParallelRefIterator;
+    use rayon::iter::IntoParallelRefMutIterator;
+    use rayon::iter::ParallelIterator;
+    let mut input = (0..32u32).collect::<Vec<_>>();
 
     // Calculate the sum of squares
-    let sq_sum: i32 = input.par_iter().map(|&i| i * i).sum();
+    let sq_sum: u32 = input.par_iter().map(|&i| i * i).sum();
+    println!("{}", sq_sum);
 
-    // Increment each element in parallel
+    // Increment each element in parallel(input is mutated)
     input.par_iter_mut().for_each(|p| *p += 1);
+    println!("{:?}", input);
 
-    // Parallel quicksort
-    let mut input = (0..1000).rev().collect::<Vec<_>>();
+    // Parallel quicksort(orignal input is mutated)
+    input.reverse();
+    println!("{:?}", input);
     quick_sort(&mut input);
+    println!("{:?}", input);
 }
 
 fn quick_sort<T: PartialOrd + Send>(v: &mut [T]) {
@@ -64,4 +74,8 @@ fn partition<T: PartialOrd + Send>(v: &mut [T]) -> usize {
     }
     v.swap(i, pivot);
     i
+}
+
+fn main() {
+    par_calculate();
 }

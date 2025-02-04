@@ -1,4 +1,3 @@
-#![allow(unused_variables, dead_code, unused_imports)]
 use std::thread::sleep;
 use std::thread::spawn;
 use std::time::Duration;
@@ -45,24 +44,7 @@ fn shared() {
     child.join().unwrap();
 }
 
-fn channels() {
-    use std::sync::mpsc;
-    let (tx, rx) = mpsc::channel();
-
-    spawn(move || {
-        for i in 0..10 {
-            let thread_tx = tx.clone();
-            thread_tx.send((i + 2) * 4).unwrap();
-        }
-    });
-
-    for _ in 0..10 {
-        println!("recv: {}", rx.recv().unwrap());
-    }
-}
-
 fn main() {
-    // channels();
-    // let n = 4967296;
-    // passing_type(n);
+    let n = u16::MAX as usize * 1024;
+    passing_type(n);
 }

@@ -1,5 +1,3 @@
-extern crate slotmap;
-
 use slotmap::SecondaryMap;
 use slotmap::SlotMap;
 
@@ -19,7 +17,6 @@ fn main() {
     sec.insert(reuse, "verb");
 
     for (key, val) in sm {
-        println!("{} is a {}", val, sec[key]);
+        println!("key={:?}, {} is a {}", key, val, sec[key]);
     }
 }
-
