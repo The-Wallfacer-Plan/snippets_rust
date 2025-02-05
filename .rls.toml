@@ -1,4 +1,0 @@
-unstable_features = true
-cfg_test = true
-build_lib = false
-sysroot = ""

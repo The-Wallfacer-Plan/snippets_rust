@@ -1,6 +1,5 @@
 sudo: false
 language: rust
-# Dependencies of kcov, used by coverage
 addons:
   apt:
     packages:
@@ -9,28 +8,19 @@ addons:
       - libdw-dev
       - binutils-dev
       - cmake
-    # sources:
-    #   - kalakris-cmake
 
 # run builds for all the trains (and more)
 rust:
   - nightly
-  - beta
-  # check it compiles on the latest stable compiler
-  - stable
 
 before_script:
   - |
-      cargo install cargo-travis &&
-      export PATH=$HOME/.cargo/bin:$PATH
+    cargo install cargo-travis &&
+    export PATH=$HOME/.cargo/bin:$PATH
 
 # the main build
 script:
   - |
-      cargo build &&
-      cargo test &&
-      cargo bench &&
-      cargo --only stable doc
-after_success:
-# measure code coverage and upload to coveralls.io
-  - cargo coveralls
+    cargo build &&
+    cargo test &&
+    cargo bench
