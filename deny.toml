@@ -1,0 +1,36 @@
+# https://embarkstudios.github.io/cargo-deny/
+[licenses]
+confidence-threshold = 0.8
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "ISC",
+    "BSD-3-Clause",
+    "Unicode-3.0",
+    "Zlib",
+    "CC0-1.0",
+    "BSD-2-Clause",
+]
+
+[advisories]
+db-path = "~/.cargo/advisory-dbs"
+db-urls = ["https://github.com/RustSec/advisory-db"]
+# ignore = [
+#     "RUSTSEC-0000-0000",
+#     "crate@0.1",
+#     { crate = "yanked", reason = "a new version has not been released" },
+# ]
+
+[output]
+feature-depth = 1
+
+[sources]
+unknown-registry = "warn"
+unknown-git = "warn"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []
+
+[sources.allow-org]
+github = []
+gitlab = []
+bitbucket = []

@@ -2,7 +2,7 @@
 authors = ["hongxu_chen@foxmail.com"]
 name = "rs_snippets"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
 anyhow = "1.0.95"
@@ -69,37 +69,37 @@ twox-hash = "2.1.0"
 # ureq = "3.0.4"
 url = "2.5.4"
 
-[profile.bench]
-codegen-units = 1
-debug = false
-debug-assertions = false
-lto = false
-opt-level = 3
-rpath = false
-
-[profile.dev]
-codegen-units = 4
-debug = true
-debug-assertions = true
-lto = false
-opt-level = 0
-rpath = false
-
-[profile.release]
-codegen-units = 1
-debug = false
-debug-assertions = false
-lto = false
-opt-level = 3
-rpath = false
-
-[profile.test]
-codegen-units = 4
-debug = true
-debug-assertions = true
-lto = false
-opt-level = 0
-rpath = false
+# [profile.bench]
+# codegen-units = 1
+# debug = false
+# debug-assertions = false
+# lto = false
+# opt-level = 3
+# rpath = false
+#
+# [profile.dev]
+# codegen-units = 4
+# debug = true
+# debug-assertions = true
+# lto = false
+# opt-level = 0
+# rpath = false
+#
+# [profile.release]
+# codegen-units = 1
+# debug = false
+# debug-assertions = false
+# lto = false
+# opt-level = 3
+# rpath = false
+#
+# [profile.test]
+# codegen-units = 4
+# debug = true
+# debug-assertions = true
+# lto = false
+# opt-level = 0
+# rpath = false
 
 [lints.rust]
 unsafe_code = "allow"
