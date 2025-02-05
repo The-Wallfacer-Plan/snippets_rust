@@ -45,7 +45,7 @@ fn t_term() {
 
 fn t_hex() {
     let hex_string = b"666f6f626172";
-    let s = Vec::from_hex(&hex_string).unwrap();
+    let s = Vec::from_hex(hex_string).unwrap();
     println!("{:?}", s);
     println!("{:?}", hex::encode(s));
 }

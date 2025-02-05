@@ -1,3 +1,5 @@
+#![allow(clippy::needless_borrow)]
+
 struct X {
     val: i32,
 }
@@ -21,17 +23,17 @@ impl M for X {
         println!("X::m()");
     }
 }
-impl<'a> M for &'a X {
+impl M for &X {
     fn m(self) {
         println!("&X::m()");
     }
 }
-impl<'a, 'b> M for &'a &'b X {
+impl M for &&X {
     fn m(self) {
         println!("&&X::m()");
     }
 }
-impl<'a, 'b, 'c> M for &'a &'b &'c X {
+impl M for &&&X {
     fn m(self) {
         println!("&&&X::m()");
     }
@@ -50,17 +52,17 @@ impl RefM for X {
         println!("X::refm()");
     }
 }
-impl<'a> RefM for &'a X {
+impl RefM for &X {
     fn refm(&self) {
         println!("&X::refm()");
     }
 }
-impl<'a, 'b> RefM for &'a &'b X {
+impl RefM for &&X {
     fn refm(&self) {
         println!("&&X::refm()");
     }
 }
-impl<'a, 'b, 'c> RefM for &'a &'b &'c X {
+impl RefM for &&&X {
     fn refm(&self) {
         println!("&&&X::refm()");
     }
@@ -94,7 +96,7 @@ impl M for A {
         println!("A::m()");
     }
 }
-impl<'a, 'b, 'c> M for &'a &'b &'c A {
+impl M for &&&A {
     fn m(self) {
         println!("&&&A::m()");
     }
@@ -104,7 +106,7 @@ impl RefM for A {
         println!("A::refm()");
     }
 }
-impl<'a, 'b, 'c> RefM for &'a &'b &'c A {
+impl RefM for &&&A {
     fn refm(&self) {
         println!("&&&A::refm()");
     }

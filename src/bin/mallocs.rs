@@ -7,7 +7,7 @@ use std::slice;
 unsafe extern "C" fn create_str() -> *mut c_char {
     unsafe {
         let ptr = malloc(12) as *mut c_char;
-        strcpy(ptr, b"Hello world\0".as_ptr() as *const c_char);
+        strcpy(ptr, c"Hello world".as_ptr() as *const c_char);
         ptr
     }
 }

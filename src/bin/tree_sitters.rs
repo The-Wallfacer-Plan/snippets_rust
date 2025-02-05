@@ -1,5 +1,3 @@
-use tree_sitter;
-
 fn main() {
     let fpath = file!();
     println!("filepath: {0}", fpath);

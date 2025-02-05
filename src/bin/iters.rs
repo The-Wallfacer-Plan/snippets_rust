@@ -1,9 +1,9 @@
 #![allow(unused_variables, dead_code, unused_imports)]
+#![allow(clippy::uninit_vec)]
 #![feature(test)]
 extern crate test;
 
 use std::ptr;
-use std::u16;
 
 type IntTy = u16;
 

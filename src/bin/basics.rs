@@ -13,11 +13,11 @@ use std::os::unix::io::AsRawFd;
 use std::time::Duration;
 
 fn t_ptrs() {
-    fn innocent_looking_fn(b: &Box<usize>) {
+    fn innocent_looking_fn(b: &usize) {
         // This wicked little bit of code will take a borrowed
         // `Box` and free it.
         unsafe {
-            let p: *const usize = &**b;
+            let p: *const usize = b;
             let _q: Box<usize> = Box::from_raw(p as *mut usize);
         }
     }
@@ -92,7 +92,7 @@ fn t_to_string() {
 
     #[inline(never)]
     fn foo_bbb(s: String) {
-        println!("{}", s.to_string());
+        println!("{}", s);
     }
 
     let sssaaa = String::from("aaaaaa");

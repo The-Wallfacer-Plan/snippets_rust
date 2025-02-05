@@ -1,3 +1,4 @@
+#![allow(clippy::disallowed_names)]
 use slotmap::SecondaryMap;
 use slotmap::SlotMap;
 
@@ -10,7 +11,7 @@ fn main() {
 
     sm.remove(bar);
     let reuse = sm.insert("reuse"); // Space from bar reused.
-    assert_eq!(sm.contains_key(bar), false); // After deletion a key stays invalid.
+    assert!(!sm.contains_key(bar)); // After deletion a key stays invalid.
 
     let mut sec = SecondaryMap::new();
     sec.insert(foo, "noun"); // We provide the key for secondary maps.

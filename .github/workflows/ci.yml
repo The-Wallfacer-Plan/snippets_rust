@@ -25,10 +25,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
-      - name: Install Faster Linker
+      - name: Install necessary C/C++ packages
         uses: ConorMacBride/install-package@v1
         with:
-          apt: mold clang libclang-dev
+          apt: mold clang-18 libclang-18-dev llvm-18 llvm-18-dev
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -65,7 +65,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Build test binary
-        run: cargo build --bin halp-test
+        run: cargo test
 
       - name: Generate code coverage
         run: cargo llvm-cov --lcov --output-path lcov.info

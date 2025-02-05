@@ -4,13 +4,11 @@ use clang::*;
 use std::path::PathBuf;
 
 pub fn gen_clang() -> Clang {
-    // Acquire an instance of `Clang`
-    let clang = Clang::new().unwrap();
-    return clang;
+    Clang::new().unwrap()
 }
 
 pub fn check_structs<S: AsRef<str>>(clang: &Clang, fpath: impl Into<PathBuf>, args: &[S]) {
-    let index = Index::new(&clang, false, false);
+    let index = Index::new(clang, false, false);
 
     let tu = index.parser(fpath).arguments(args).parse().unwrap();
     println!("{:?}", tu.get_memory_usage());
