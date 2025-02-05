@@ -1,3 +1,4 @@
+cargo-features = ["codegen-backend"]
 [package]
 authors = ["hongxu_chen@foxmail.com"]
 name = "rs_snippets"
@@ -69,40 +70,17 @@ twox-hash = "2.1.0"
 # ureq = "3.0.4"
 url = "2.5.4"
 
-# [profile.bench]
-# codegen-units = 1
-# debug = false
-# debug-assertions = false
-# lto = false
-# opt-level = 3
-# rpath = false
-#
-# [profile.dev]
-# codegen-units = 4
-# debug = true
-# debug-assertions = true
-# lto = false
-# opt-level = 0
-# rpath = false
-#
-# [profile.release]
-# codegen-units = 1
-# debug = false
-# debug-assertions = false
-# lto = false
-# opt-level = 3
-# rpath = false
-#
-# [profile.test]
-# codegen-units = 4
-# debug = true
-# debug-assertions = true
-# lto = false
-# opt-level = 0
-# rpath = false
-
 [lints.rust]
 unsafe_code = "allow"
 unused = "allow"
 unused_variables = "allow"
 unsafe_op_in_unsafe_fn = "allow"
+
+[profile.dev]
+debug = 0
+codegen-backend = "cranelift"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
