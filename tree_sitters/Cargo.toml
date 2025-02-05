@@ -1,0 +1,10 @@
+[package]
+name = "tree_sitters"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tree-sitter = "0.25.1"
+tree-sitter-highlight = "0.25.1"
+tree-sitter-json = "0.24.8"
+tree-sitter-rust = "0.23.2"

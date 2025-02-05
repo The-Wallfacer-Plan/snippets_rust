@@ -5,6 +5,7 @@ fn main() {
     let content = "[1, {\"key1\": \"val1\", \"key2\": \"val2\"}]";
 
     let mut parser = tree_sitter::Parser::new();
+
     parser
         .set_language(&tree_sitter_json::LANGUAGE.into())
         .expect("error handling rust grammar");

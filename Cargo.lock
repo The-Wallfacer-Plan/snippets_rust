@@ -1579,6 +1579,74 @@ dependencies = [
 ]
 
 [[package]]
+name = "misc_snippets"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bitflags 2.8.0",
+ "burst-pool",
+ "bytecount",
+ "chan",
+ "chan-signal",
+ "chrono",
+ "clang",
+ "crossbeam",
+ "envy",
+ "errno",
+ "error-chain",
+ "esprit",
+ "failure",
+ "futures 0.3.31",
+ "fxhash",
+ "getset",
+ "hex",
+ "hyper",
+ "ignore",
+ "itertools",
+ "libc",
+ "llvm-sys",
+ "log",
+ "maplit",
+ "memmap",
+ "memmem",
+ "nix 0.29.0",
+ "nom 8.0.0",
+ "notify",
+ "num_cpus",
+ "once_cell",
+ "petgraph",
+ "rand 0.9.0",
+ "rayon",
+ "redis",
+ "regex",
+ "rsgenetic",
+ "serde 1.0.217",
+ "serde_derive",
+ "serde_json 1.0.138",
+ "slotmap",
+ "specs",
+ "spmc",
+ "sqlite",
+ "stdext",
+ "strum",
+ "tempdir",
+ "tempfile",
+ "term",
+ "termion",
+ "threadpool",
+ "time",
+ "tokei",
+ "tokio-core",
+ "toml 0.8.19",
+ "tree-sitter",
+ "tree-sitter-highlight",
+ "tree-sitter-json",
+ "tree-sitter-rust",
+ "twox-hash",
+ "url",
+]
+
+[[package]]
 name = "net2"
 version = "0.2.39"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2228,74 +2296,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3acd125665422973a33ac9d3dd2df85edad0f4ae9b00dafb1a05e43a9f5ef8e7"
 dependencies = [
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "rs_snippets"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "bitflags 2.8.0",
- "burst-pool",
- "bytecount",
- "chan",
- "chan-signal",
- "chrono",
- "clang",
- "crossbeam",
- "envy",
- "errno",
- "error-chain",
- "esprit",
- "failure",
- "futures 0.3.31",
- "fxhash",
- "getset",
- "hex",
- "hyper",
- "ignore",
- "itertools",
- "libc",
- "llvm-sys",
- "log",
- "maplit",
- "memmap",
- "memmem",
- "nix 0.29.0",
- "nom 8.0.0",
- "notify",
- "num_cpus",
- "once_cell",
- "petgraph",
- "rand 0.9.0",
- "rayon",
- "redis",
- "regex",
- "rsgenetic",
- "serde 1.0.217",
- "serde_derive",
- "serde_json 1.0.138",
- "slotmap",
- "specs",
- "spmc",
- "sqlite",
- "stdext",
- "strum",
- "tempdir",
- "tempfile",
- "term",
- "termion",
- "threadpool",
- "time",
- "tokei",
- "tokio-core",
- "toml 0.8.19",
- "tree-sitter",
- "tree-sitter-highlight",
- "tree-sitter-json",
- "tree-sitter-rust",
- "twox-hash",
- "url",
 ]
 
 [[package]]
@@ -3183,6 +3183,16 @@ checksum = "a4d64d449ca63e683c562c7743946a646671ca23947b9c925c0cfbe65051a4af"
 dependencies = [
  "cc",
  "tree-sitter-language",
+]
+
+[[package]]
+name = "tree_sitters"
+version = "0.1.0"
+dependencies = [
+ "tree-sitter",
+ "tree-sitter-highlight",
+ "tree-sitter-json",
+ "tree-sitter-rust",
 ]
 
 [[package]]
