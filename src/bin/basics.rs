@@ -113,4 +113,3 @@ fn main() {
     //    t_atomics();
     t_envs();
 }
-

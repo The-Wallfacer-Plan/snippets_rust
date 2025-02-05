@@ -10,18 +10,16 @@ fn main() {
 fn test_recv() {
     println!("Press enter to wake up the child thread");
     let (tx, rx) = mpsc::channel();
-    thread::spawn(move || {
-        loop {
-            println!("Suspending...");
-            match rx.recv() {
-                Ok(_) => {
-                    println!("Working...");
-                    thread::sleep(Duration::from_millis(500));
-                }
-                Err(_) => {
-                    println!("Terminating.");
-                    break;
-                }
+    thread::spawn(move || loop {
+        println!("Suspending...");
+        match rx.recv() {
+            Ok(_) => {
+                println!("Working...");
+                thread::sleep(Duration::from_millis(500));
+            }
+            Err(_) => {
+                println!("Terminating.");
+                break;
             }
         }
     });
@@ -37,17 +35,15 @@ fn test_recv() {
 fn test_try_recv() {
     println!("Press enter to terminate the child thread");
     let (tx, rx) = mpsc::channel();
-    thread::spawn(move || {
-        loop {
-            println!("Working...");
-            thread::sleep(Duration::from_millis(500));
-            match rx.try_recv() {
-                Ok(_) | Err(TryRecvError::Disconnected) => {
-                    println!("Terminating.");
-                    break;
-                }
-                Err(TryRecvError::Empty) => {}
+    thread::spawn(move || loop {
+        println!("Working...");
+        thread::sleep(Duration::from_millis(500));
+        match rx.try_recv() {
+            Ok(_) | Err(TryRecvError::Disconnected) => {
+                println!("Terminating.");
+                break;
             }
+            Err(TryRecvError::Empty) => {}
         }
     });
 
