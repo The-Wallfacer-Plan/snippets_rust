@@ -28,7 +28,7 @@ jobs:
       - name: Install necessary C/C++ packages
         uses: ConorMacBride/install-package@v1
         with:
-          apt: mold clang-18 libclang-18-dev llvm-18 llvm-18-dev
+          apt: mold llvm-18-linker-tools clang-18 libclang-18-dev llvm-18 llvm-18-dev clang libclang-dev llvm llvm-dev
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -39,10 +39,12 @@ jobs:
           override: true
 
       - name: Build
+        # env:
+        #   LLVM_CONFIG_PATH: /usr/bin/llvm-config-18
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --config .cargo/config-ci.toml --locked --target ${{ matrix.build.TARGET }}
+          args: --locked --target ${{ matrix.build.TARGET }}
 
   test:
     name: Test
@@ -50,6 +52,11 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
+
+      - name: Install necessary C/C++ packages
+        uses: ConorMacBride/install-package@v1
+        with:
+          apt: mold llvm-18-linker-tools clang-18 libclang-18-dev llvm-18 llvm-18-dev clang libclang-dev llvm llvm-dev
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -62,7 +69,9 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Build test binary
-        run: cargo --config .cargo/config-ci.toml test
+        # env:
+        #   LLVM_CONFIG_PATH: /usr/bin/llvm-config-18
+        run: cargo test
 
   lint:
     name: Lint
@@ -77,11 +86,16 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Install necessary C/C++ packages
+        uses: ConorMacBride/install-package@v1
+        with:
+          apt: mold llvm-18-linker-tools clang-18 libclang-18-dev llvm-18 llvm-18-dev clang libclang-dev llvm llvm-dev
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable
+          toolchain: nightly
           override: true
           components: rustfmt, clippy
 
@@ -96,6 +110,8 @@ jobs:
 
       - name: Run clippy
         uses: actions-rs/cargo@v1
+        # env:
+        #   LLVM_CONFIG_PATH: /usr/bin/llvm-config-18
         with:
           command: clippy
           args: --tests -- -D warnings
