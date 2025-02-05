@@ -1,4 +1,8 @@
 cargo-features = ["codegen-backend"]
+
+[workspace]
+# members = ["tree_siters"]
+
 [package]
 authors = ["hongxu_chen@foxmail.com"]
 name = "rs_snippets"
