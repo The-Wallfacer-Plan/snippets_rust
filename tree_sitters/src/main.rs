@@ -11,6 +11,7 @@ fn main() {
         .expect("error handling rust grammar");
     let tree = parser.parse(content, None).unwrap();
     let root_node = tree.root_node();
+
     println!("kind: {}", root_node.kind());
     let array_node = root_node.named_child(0).unwrap();
     println!("kind: {}", array_node.kind());
@@ -20,8 +21,11 @@ fn main() {
     println!("kind: {}", object_node.kind());
     assert_eq!(root_node.child_count(), 1);
     assert_eq!(array_node.child_count(), 5);
+
     assert_eq!(array_node.named_child_count(), 2);
     assert_eq!(number_node.child_count(), 0);
+    println!("{:?}", number_node.utf8_text(content.as_bytes()));
+
     assert_eq!(object_node.child_count(), 5);
     println!("syntax tree: {0}", root_node.to_sexp());
     let mut cursor = root_node.walk();
